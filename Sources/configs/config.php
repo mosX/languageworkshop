@@ -1,24 +1,9 @@
 <?php        
 $config = array(
-    /*"host" => "localhost",
-    "user" => "root",
-    "pass" => "killer1906",
-    "db"   => "amocrm",*/
-    
-    /*"host" => "78.46.72.107",
-    "user" => "iptv",
-    "pass" => "Tm7xTh7QuEjyVuW7",
-    "db"   => "iptv",*/
-    
-    /*"host" => "localhost",
-    "user" => "root",
-    "pass" => "killer1906",
-    "db"   => "incorex",*/
-    
     "host" => "localhost",
     "user" => "root",
     "pass" => "killer1906",
-    "db"   => "binomo",
+    "db"   => "languageworkshop",
     
 //    'assets_source' => 'http://newsmarttv.com/assets',
     'assets_source' => 'http://smarttv.probud.net.ua/assets',

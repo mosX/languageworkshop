@@ -53,3 +53,40 @@ body{
 .container{
     width:1140px;
 }
+
+.form input[type=submit]{
+    height: 44px;
+    width:100%;
+    border: 1px solid #fff55a;
+    background:#fff55a;
+    color: #222;
+    border-radius: 4px;
+    font-weight:bold;
+}
+
+.btn.btn-primary{
+    height: 38px;
+    padding:8px 20px;
+    border: 1px solid #3D52B0;
+    color: #3D52B0;
+    background: none;
+    font-size:14px;
+    font-weight:bold;
+    border-radius: 0px;
+}
+.btn.btn-primary:hover,.btn.btn-primary.active{
+    background:none;
+}
+
+.btn.btn-default{
+    height: 44px;    
+    border: 1px solid #fff55a;
+    background:#fff55a;
+    color: #222;
+    border-radius: 4px;
+    font-weight:bold;
+    padding:10px 20px;
+}
+.btn.btn-default:hover,.btn.btn-default.active{
+    background:none;
+}
