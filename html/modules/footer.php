@@ -1,15 +1,24 @@
 <style>
     #footer{
-        padding-top:30px;
+        
+        padding-top:60px;
         width:100%;
         height:140px;
         background: black;
+        color:white;
+    }
+    #footer .contacts{
+        font-size: 18px;
     }
 </style>
 
 <div id="footer">
     <div class='container'>
-        <p>Индивидуальные занятия английским языком в Виннице</p>
-        <div class='contacts'>+ 38 (097) 692 85 78</div>
+        <div class='left pull-left'>
+            <p>Индивидуальные занятия английским языком в Виннице</p>
+        </div>
+        <div class='right pull-right'>
+            <div class='contacts'>+ 38 (098) 092 07 92</div>
+        </div>                
     </div>
 </div>

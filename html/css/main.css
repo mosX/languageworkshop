@@ -54,6 +54,10 @@ body{
     width:1140px;
 }
 
+input.form-control,select.form-control{
+    height: 44px;
+}
+
 .form input[type=submit]{
     height: 44px;
     width:100%;
