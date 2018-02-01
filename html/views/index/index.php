@@ -8,6 +8,10 @@
    #bannerCarousel .item:hover{
        text-decoration: none;
    }
+   #bannerCarousel .content{
+       width:1110px;
+       margin:auto;
+   }
    #bannerCarousel .title{
        width:700px;
         padding:20px 30px 20px 15px;
@@ -45,17 +49,17 @@
 
     <div class="carousel-inner">            
         <a href="" class="item active" style="background:url('/html/images/img2_1.jpg') no-repeat center center; background-size: cover">
-            <div class='container'>
+            <div class='content'>
                 <div class='title'>ІНДИВІДУАЛЬНІ ЗАНЯТТЯ</div>
             </div>
         </a>
         <a href="" class="item" style="background:url('/html/images/img3.jpg') no-repeat center center; background-size: cover">
-            <div class='container'>
+            <div class='content'>
                 <div class='title'>НАВЧАННЯ В НЕВЕЛИКИХ ГРУПАХ</div>
             </div>
         </a>
         <a href="" class="item" style="background:url('/html/images/img1.jpg') no-repeat center center; background-size: cover">
-            <div class='container'>
+            <div class='content'>
                 <div class='title'>ПІДГОТОВКА ДО ІСПИТІВ</div>
             </div>
         </a>
