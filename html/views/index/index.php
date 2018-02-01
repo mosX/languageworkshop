@@ -1,121 +1,101 @@
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyChQwAXEXRThQkqgC-xW18anW640loh6IA&sensor=false&libraries=places&v=3"></script>
 
-<style>
-    #block1{
-        width:100%;
-        height:615px;
-        background: url('/html/images/img1.jpg') no-repeat center center;
-        background-size: cover;
-    }
-    
-    #block1 .title{
-        width:700px;
+
+<style>       
+   #bannerCarousel .item{
+       height: 600px;
+   }
+   #bannerCarousel .title{
+       width:700px;
         padding:20px 30px 20px 15px;
         background: rgba(77,105,190,0.65);
         font-size:36px;
         color: white;
         margin-bottom:20px;
-    }
-    #block1 .form{
-        margin-top:100px;
-        padding:30px 30px;
-        width:380px;
-        height:auto;
-        background: white;
-        border-radius: 8px;
-    }
+        margin-top:200px;
+        text-decoration: none;
+   }
 </style>
 
-<div id="block1">
-    <div class='container'>
-        <div class='row'>
-            <div class='col-sm-8' style='padding-top:100px;'>
+<div style='display:none'>
+    <img src='/html/images/img1.jpg'>
+    <img src='/html/images/img2.jpg'>
+    <img src='/html/images/img3.jpg'>
+</div>
+<div id="bannerCarousel" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">            
+        <li data-target="#bannerCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#bannerCarousel" data-slide-to="1" class=""></li>
+        <li data-target="#bannerCarousel" data-slide-to="2" class=""></li>                
+    </ol>
+
+    <div class="carousel-inner">            
+        <a href="" class="item active" style="background:url('/html/images/img2.jpg') no-repeat center center; background-size: cover">
+            <div class='container'>
                 <div class='title'>ІНДИВІДУАЛЬНІ ЗАНЯТТЯ</div>
+            </div>
+        </a>
+        <a href="" class="item" style="background:url('/html/images/img3.jpg') no-repeat center center; background-size: cover">
+            <div class='container'>
                 <div class='title'>НАВЧАННЯ В НЕВЕЛИКИХ ГРУПАХ</div>
+            </div>
+        </a>
+        <a href="" class="item" style="background:url('/html/images/img1.jpg') no-repeat center center; background-size: cover">
+            <div class='container'>
                 <div class='title'>ПІДГОТОВКА ДО ІСПИТІВ</div>
             </div>
-            <div class='col-sm-4'>
-                <?php if(2==3){ ?>
-                    <form class='form'>
-                        <div class='form-group text-center'>
-                            <strong>Заполните форму</strong>
-                            <p>и преподаватель перезвонит Вам, чтобы ответить на все вопросы</p>
-                        </div>
-                        <div class='form-group'>
-                            <div class='row'>
-                                <div class='col-sm-12'>
-                                    <label>Ваше имя</label>
-                                </div>
-                                <div class='col-sm-12'>
-                                    <input type='text' class='form-control'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class='form-group'>
-                            <div class='row'>
-                                <div class='col-sm-12'>
-                                    <label>Ваш номер телефона</label>
-                                </div>
-                                <div class='col-sm-12'>
-                                    <input type='text' class='form-control'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class='form-group'>
-                            <div class='row'>
-                                <div class='col-sm-12'>
-                                    <input type="submit" value="Получить консультацию">  
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                <?php } ?>
-            </div>
-        </div>
+        </a>
     </div>
+
+    <a class="carousel-control left" href="#bannerCarousel" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
+    <a class="carousel-control right" href="#bannerCarousel" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+    </a>
 </div>
+
 
 <style>
     #block2{
-        padding-top:40px;
+        padding-top:20px;
+        padding-bottom:20px;
         width:100%;
-        height:470px;
-        background: white;
+        height:auto;
+        background: #ddd;
     }
     #block2 .item{
         margin:auto;
-        text-align: center;
+        text-align: left;
+        margin-bottom: 30px;
     }
-    #block2 .item .ico_block{
-        height: 100px;
-        width:100%;
-        text-align: center;
-    }
-    #block2 .item .ico_block svg{
-        width:60px;
-        height: 60px;
-    }
+    
     #block2 .item .title{
         color: #222;
         font-weight:bold;
-        font-size: 20px;
-        height:60px;
+        font-size: 18px;
+        margin-bottom:10px;
     }
     #block2 .item .text{
         color: #222;
-        font-size: 16px;
-        font-weight:bold;
+        font-size: 14px;
+        font-weight:normal;
+    }
+    #block2 .img_block{
+        margin-top:70px;
+        float:right;
+        width:300px;
+        height: 400px;
+        background: url('/html/images/img1.jpg') no-repeat center center; 
+        background-size:cover;
     }
 </style>
 
 <div id="block2">
-    <div class='container'>
-        <div class='row'>
-            <div class='col-sm-3'>
+    <div class='container'>        
+        <div class="row">
+            <div class="col-sm-8">
                 <div class='item'>
-                    <div class='ico_block'>
-                        <svg viewBox="0 0 50 50"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/html/images/14.svg#icon"></use></svg>
-                    </div>
                     <div class='title'>КОМУНІКАТИВНА МЕТОДИКА</div>
 
                     <div class='text'>
@@ -123,66 +103,76 @@
                         Основною метою цієї методики є навчити студента спочатку вільно розмовляти англійською мовою , а потім думати нею.
                     </div>
                 </div>
-            </div>
-            <div class='col-sm-3'>
+
                 <div class='item'>
-                    <div class='ico_block'>
-                        <svg viewBox="0 0 50 50"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/html/images/139.svg#icon"></use></svg>
-                    </div>
                     <div class='title'>ІНТЕНСИВНЕ ВИВЧЕННЯ</div>
                     <div class='text'>
                         На початковому етапі вивчення іноземної мови інтенсивне навчання – це найкращий мотиватор!  
                         Сьогодні ви вмієте сказати, як вас звати, завтра – ви вже вмітимете говорити про свою родину / друзів, за тиждень – ви вже вмієте говорити про вихідні і відпустки. 
                     </div>  
                 </div>
-            </div>
-            <div class='col-sm-3'>
+
                 <div class='item'>
-                    <div class='ico_block'>
-                        <svg viewBox="0 0 50 50"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/html/images/629.svg#icon"></use></svg>
-                    </div>
+
                     <div class='title'>ІНДИВІДУАЛЬНИЙ ПІДХІД</div>
                     <div class='text'>Використання індивідуального підходу полягає в такій організації навчального процесу, при якому враховуються індивідуальні відмінності учнів, рівень їх здібності до навчання</div>
                 </div>
-            </div>
-            <div class='col-sm-3'>
-                <div class='item'>
-                    <div class='ico_block'>
-                        <svg viewBox="0 0 50 50"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/html/images/117.svg#icon"></use></svg>
-                    </div>
+
+                <div class='item'>                    
                     <div class='title'>АВТЕНТИЧНІ ВІДЕО ТА АУДІО МАТЕРІАЛИ</div>
                     <div class='text'>Щоб розвивати навички розуміння іноземної мови на слух, необхідні для розуміння живої мови,потрібно знайомитись з автентичними текстами, або тими, які звучать, як автентичні. Це можуть бути фрагменти художніх фільмів, телепередач, діалоги, тощо</div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="img_block">
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+
 <style>
     #price_block{
         padding-top:40px;
+        padding-bottom:40px;
         width:100%;
-        height:650px;
-        background: #F7F7F7;
+        min-height:470px;
+        border-bottom: 1px solid #ddd;
+        background: white
     }
     #price_block h2{
         text-align: center;
         font-size: 46px;
         margin-bottom: 50px;
     }
+    #price_block .item{
+        margin:auto;
+        text-align: center;
+    }
+    #price_block .item .ico_block{
+        height: 100px;
+        width:100%;
+        text-align: center;
+    }
+    #price_block .item .ico_block svg{
+        width:60px;
+        height: 60px;
+    }
+    #price_block .item .title{
+        color: #222;
+        font-weight:bold;
+        font-size: 20px;
+        height:60px;
+    }
+    #price_block .item .text{
+        color: #222;
+        font-size: 16px;
+        font-weight:bold;
+    }
     
-    #p strong{
-        font-size: 22px;
-        margin-bottom:20px;
-    }
-    #price_block p{
-        font-size: 18px;
-        margin-bottom:20px;
-    }
-    #price_block .well{
-        font-weight: bold;
-    }
     #price_block .notification{
+        margin-top:50px;
         border: 1px dashed #fab80f;
         padding:30px;
         width:100%;
@@ -193,15 +183,54 @@
 <div id="price_block">
     <div class='container'>
         <h2>ВАРТІСТЬ НАВЧАННЯ</h2>
-        
-        <div class='well'>1 ЗАНЯТТЯ БЕЗКОШТОВНО </div>
-        <div class='well'>ІНДИВІДУАЛЬНЕ НАВЧАННЯ 100 ГРН/ 60 ХВ, 130 ГРН/ 90 ХВ </div>
-        <div class='well'>ГРУПОВІ ЗАНЯТТЯ(2-4 ЛЮДИНИ) 80ГРН/60 ХВ, 100 ГРН/90 ХВ</div>
-        <div class='well'>ПІДГОТОВКА ДО ІСПИТІВ 150 ГРН/90 ХВ</div>
+        <div class='row'>
+            <div class='col-sm-3'>
+                <div class='item'>
+                    <div class='ico_block'>
+                        <svg viewBox="0 0 50 50"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/html/images/14.svg#icon"></use></svg>
+                    </div>
+                    <div class='title'>ПЕРШЕ ЗАНЯТТЯ</div>
 
+                    <div class='text'>
+                        БЕЗКОШТОВНО
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-3'>
+                <div class='item'>
+                    <div class='ico_block'>
+                        <svg viewBox="0 0 50 50"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/html/images/139.svg#icon"></use></svg>
+                    </div>
+                    <div class='title'>ІНДИВІДУАЛЬНЕ НАВЧАННЯ</div>
+                    <div class='text'>
+                        100 ГРН/ 60 ХВ </br> 130 ГРН/ 90 ХВ
+                    </div>  
+                </div>
+            </div>
+            <div class='col-sm-3'>
+                <div class='item'>
+                    <div class='ico_block'>
+                        <svg viewBox="0 0 50 50"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/html/images/629.svg#icon"></use></svg>
+                    </div>
+                    <div class='title'>ГРУПОВІ ЗАНЯТТЯ(2-4 ЛЮДИНИ)</div>
+                    <div class='text'>80ГРН/60 ХВ</br> 100 ГРН/90 ХВ</div>
+                </div>
+            </div>
+            <div class='col-sm-3'>
+                <div class='item'>
+                    <div class='ico_block'>
+                        <svg viewBox="0 0 50 50"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/html/images/117.svg#icon"></use></svg>
+                    </div>
+                    <div class='title'>ПІДГОТОВКА ДО ІСПИТІВ</div>
+                    <div class='text'>150 ГРН/90 ХВ</div>
+                </div>
+            </div>
+        </div>
+        
         <div class='notification'>*ВАРТІСТЬ НАВЧАННЯ ОПЛАЧУЄТЬСЯ ЗА МІСЯЦЬ ВІДПОВІДНО ДО УЗГОДЖЕНОГО ГРАФІКА НАВЧАННЯ</div>
     </div>
 </div>
+
 
 <style>
     #block3{
