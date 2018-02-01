@@ -66,7 +66,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/"><img src="/html/images/logo.png"></a>
+            <!--<a class="navbar-brand" href="/"><img src="/html/images/logo.png"></a>-->
+            <a style='font-size:26px; color: #fab80f; margin-top:12px;' class="navbar-brand" href="/">LanguageWorkShop</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

@@ -3,25 +3,39 @@
 
 <style>       
    #bannerCarousel .item{
-       height: 600px;
+       height: 600px;       
+   }
+   #bannerCarousel .item:hover{
+       text-decoration: none;
    }
    #bannerCarousel .title{
        width:700px;
         padding:20px 30px 20px 15px;
-        background: rgba(77,105,190,0.65);
+        /*background: rgba(77,105,190,0.65);*/
+        background: rgba(0,0,0,0.4);
+        border-radius: 10px;
+        box-shadow: 0px 0px 40px rgba(100,100,100,0.5);
         font-size:36px;
         color: white;
         margin-bottom:20px;
-        margin-top:200px;
-        text-decoration: none;
+        margin-top:100px;
+        position:absolute;
+        bottom:50px;
    }
+   /*#bannerCarousel .item img{
+       height:100%;
+       margin:auto;
+   }*/
+   
+   
 </style>
 
-<div style='display:none'>
+<!--<div style='display:none'>
     <img src='/html/images/img1.jpg'>
     <img src='/html/images/img2.jpg'>
     <img src='/html/images/img3.jpg'>
-</div>
+</div>-->
+
 <div id="bannerCarousel" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">            
         <li data-target="#bannerCarousel" data-slide-to="0" class="active"></li>
@@ -30,7 +44,7 @@
     </ol>
 
     <div class="carousel-inner">            
-        <a href="" class="item active" style="background:url('/html/images/img2.jpg') no-repeat center center; background-size: cover">
+        <a href="" class="item active" style="background:url('/html/images/img2_1.jpg') no-repeat center center; background-size: cover">
             <div class='container'>
                 <div class='title'>ІНДИВІДУАЛЬНІ ЗАНЯТТЯ</div>
             </div>
@@ -55,38 +69,39 @@
     </a>
 </div>
 
-
 <style>
     #block2{
-        padding-top:20px;
+        padding-top:30px;
         padding-bottom:20px;
         width:100%;
         height:auto;
-        background: #ddd;
+        background: black url('/html/images/block2_bg.jpg') no-repeat center center;
+        background-size: cover;
     }
     #block2 .item{
         margin:auto;
         text-align: left;
         margin-bottom: 30px;
+        color: white;
     }
     
     #block2 .item .title{
-        color: #222;
+        color: white;
         font-weight:bold;
         font-size: 18px;
         margin-bottom:10px;
     }
     #block2 .item .text{
-        color: #222;
+        color: white;
         font-size: 14px;
         font-weight:normal;
     }
     #block2 .img_block{
-        margin-top:70px;
+        margin-top:35px;
         float:right;
-        width:300px;
+        width:400px;
         height: 400px;
-        background: url('/html/images/img1.jpg') no-repeat center center; 
+        background: url('/html/images/img5.jpg') no-repeat center center; 
         background-size:cover;
     }
 </style>
@@ -94,7 +109,7 @@
 <div id="block2">
     <div class='container'>        
         <div class="row">
-            <div class="col-sm-8">
+            <div class="col-sm-7">
                 <div class='item'>
                     <div class='title'>КОМУНІКАТИВНА МЕТОДИКА</div>
 
@@ -123,7 +138,7 @@
                     <div class='text'>Щоб розвивати навички розуміння іноземної мови на слух, необхідні для розуміння живої мови,потрібно знайомитись з автентичними текстами, або тими, які звучать, як автентичні. Це можуть бути фрагменти художніх фільмів, телепередач, діалоги, тощо</div>
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                 <div class="img_block">
                 </div>
             </div>
@@ -173,7 +188,8 @@
     
     #price_block .notification{
         margin-top:50px;
-        border: 1px dashed #fab80f;
+        border: 2px dashed #fab80f;
+        font-weight: bold;
         padding:30px;
         width:100%;
         background:white;
@@ -237,7 +253,7 @@
         padding-top:80px;
         width:100%;
         height:546px;
-        background: url('/html/images/img3.jpg') no-repeat center center;
+        background: url('/html/images/img6.jpg') no-repeat center center;
         background-size: cover;
     }
     #block3 .form{        
@@ -261,12 +277,12 @@
         font-size: 20px;
     }
     #block3 .block{
-        background: rgba(0,0,0,0.5);
+        background: rgba(0,0,0,0.3);
         width:800px;
         padding:40px;
         margin:auto;
         border-radius: 10px;
-        box-shadow: 0px 0px 20px rgba(100,100,100,0.6);
+        box-shadow: 0px 0px 60px rgba(255,255,255,0.2);
     }
 </style>
 
