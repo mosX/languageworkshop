@@ -1,14 +1,17 @@
 <style>
-    #footer{
-        
-        padding-top:60px;
+    #footer{        
+        padding-top:30px;
         width:100%;
-        height:140px;
-        background: black;
+        height:80px;
+        background: #433D39;
         color:white;
     }
     #footer .contacts{
         font-size: 18px;
+        margin-top:-5px;
+    }
+    #footer .left{
+        font-weight: bolder;
     }
 </style>
 

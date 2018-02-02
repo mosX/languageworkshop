@@ -19,7 +19,7 @@
            var app = angular.module("app",[]);
         </script>
         <?=$this->module('header')?>
-        <?=$this->maincontent?>        
-        <?=$this->module('footer')?>
+        <?= $this->maincontent?>        
+        <?= $this->module('footer')?>        
     </body>
 </html>

@@ -30,8 +30,15 @@
        height:100%;
        margin:auto;
    }*/
+   
+   
 </style>
 
+<!--<div style='display:none'>
+    <img src='/html/images/img1.jpg'>
+    <img src='/html/images/img2.jpg'>
+    <img src='/html/images/img3.jpg'>
+</div>-->
 
 <div id="bannerCarousel" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">            
@@ -83,22 +90,10 @@
     }
     
     #block2 .item .title{
-        position:relative;
         color: white;
         font-weight:bold;
         font-size: 18px;
         margin-bottom:10px;
-        display:inline-block;
-    }
-    #block2 .item .title:after{
-        content:'';
-        width:150px;
-        height: 2px;
-        background: #fab80f;
-        position:absolute;
-        left:0px;
-        
-        bottom:-3px;
     }
     #block2 .item .text{
         color: white;
@@ -112,8 +107,6 @@
         height: 400px;
         background: url('/html/images/img5.jpg') no-repeat center center; 
         background-size:cover;
-        box-shadow: 0px 0px 32px rgba(0,0,0,0.45);
-        border: 2px solid #222;
     }
 </style>
 
@@ -160,63 +153,37 @@
 
 <style>
     #price_block{
-        padding-top:20px;
+        padding-top:40px;
         padding-bottom:40px;
         width:100%;
         min-height:470px;
         border-bottom: 1px solid #ddd;
-        background: #fdfbf5;
+        background: white
     }
     #price_block h2{
-        position:relative;
         text-align: center;
         font-size: 46px;
-        margin-bottom: 70px;
+        margin-bottom: 50px;
     }
-    
-    #price_block h2:after{
-        display:block;
-        content:'';
-        position:absolute;
-        height: 2px;
-        width:200px;
-        left:50%;
-        margin-left: -100px;
-        background: #fab80f;
-        bottom:-10px;
-    }
-    
     #price_block .item{
-        background: white;
         margin:auto;
         text-align: center;
-        border: 2px solid #fab80f; 
-        border-radius: 12px;
-        height: 300px;
-        padding:30px 10px;
-        box-shadow: 0px 0px 20px rgba(32,32,32,0.17);
     }
     #price_block .item .ico_block{
         height: 100px;
         width:100%;
         text-align: center;
-        position:relative;
-        margin-bottom: 20px;
     }
-    /*#price_block .item .ico_block svg{
+    #price_block .item .ico_block svg{
         width:60px;
         height: 60px;
-    }*/
+    }
     #price_block .item .title{
-        position:relative;
         color: #222;
         font-weight:bold;
         font-size: 20px;
-        line-height: 22px;
         height:60px;
-        margin-bottom:10px;
     }
-    
     #price_block .item .text{
         color: #222;
         font-size: 16px;
@@ -225,38 +192,11 @@
     
     #price_block .notification{
         margin-top:50px;
-        border: 2px dashed #fab80f;        
-        font-size:18px;
+        border: 2px dashed #fab80f;
         font-weight: bold;
         padding:30px;
         width:100%;
         background:white;
-    }
-    #price_block .item .ico_block .ico{
-        background: url('/html/images/sprite.png');
-        margin:auto;
-        position:relative;
-    }
-    #price_block .item .ico_block .ico.ico1{
-        width:100px;
-        height:98px;
-        background-position:-0px -2px;
-    }
-    #price_block .item .ico_block .ico.ico2{
-        width:100px;
-        height:100px;
-        background-position:-460px -4px;
-    }
-    #price_block .item .ico_block .ico.ico3{
-        width:100px;
-        height:100px;
-        background-position:-358px -0px;
-    }
-    #price_block .item .ico_block .ico.ico4{
-        top:20px;
-        width:100px;
-        height:60px;
-        background-position:-112px -26px;
     }
 </style>
 
@@ -267,7 +207,7 @@
             <div class='col-sm-3'>
                 <div class='item'>
                     <div class='ico_block'>
-                        <div class='ico ico1'></div>
+                        <svg viewBox="0 0 50 50"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/html/images/14.svg#icon"></use></svg>
                     </div>
                     <div class='title'>ПЕРШЕ ЗАНЯТТЯ</div>
 
@@ -279,7 +219,7 @@
             <div class='col-sm-3'>
                 <div class='item'>
                     <div class='ico_block'>
-                        <div class='ico ico2'></div>
+                        <svg viewBox="0 0 50 50"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/html/images/139.svg#icon"></use></svg>
                     </div>
                     <div class='title'>ІНДИВІДУАЛЬНЕ НАВЧАННЯ</div>
                     <div class='text'>
@@ -290,7 +230,7 @@
             <div class='col-sm-3'>
                 <div class='item'>
                     <div class='ico_block'>
-                        <div class='ico ico3'></div>
+                        <svg viewBox="0 0 50 50"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/html/images/629.svg#icon"></use></svg>
                     </div>
                     <div class='title'>ГРУПОВІ ЗАНЯТТЯ(2-4 ЛЮДИНИ)</div>
                     <div class='text'>80ГРН/60 ХВ</br> 100 ГРН/90 ХВ</div>
@@ -299,7 +239,7 @@
             <div class='col-sm-3'>
                 <div class='item'>
                     <div class='ico_block'>
-                        <div class='ico ico4'></div>
+                        <svg viewBox="0 0 50 50"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/html/images/117.svg#icon"></use></svg>
                     </div>
                     <div class='title'>ПІДГОТОВКА ДО ІСПИТІВ</div>
                     <div class='text'>150 ГРН/90 ХВ</div>
@@ -310,6 +250,7 @@
         <div class='notification'>*ВАРТІСТЬ НАВЧАННЯ ОПЛАЧУЄТЬСЯ ЗА МІСЯЦЬ ВІДПОВІДНО ДО УЗГОДЖЕНОГО ГРАФІКА НАВЧАННЯ</div>
     </div>
 </div>
+
 
 <style>
     #block3{
@@ -331,8 +272,6 @@
         text-align: center;
         color: white;
         font-size: 60px;
-        line-height: 50px;
-        margin-bottom:30px;
     }
     #block3 h3{
         margin:auto;
@@ -354,8 +293,8 @@
 <div id="block3">
     <div class='container'>
         <div class='block'>
-            <h2>Маєте питання чи потрібна консультація?</h2>
-            <h3>Залишіть свої контакти і викладачь проконсультує по всім питанням що Вас цікавлять</h3>            
+            <h2>Есть вопросы или нужна консультация?</h2>
+            <h3>Оставьте свои контакты и преподаватель проконсультирует Вас по всем интересующим вопросам</h3>
 
             <form class='form'>
                 <div class='row'>
@@ -363,7 +302,7 @@
                         <div class='form-group'>
                             <div class='row'>
                                 <div class='col-sm-12'>
-                                    <label>Ім'я</label>
+                                    <label>Имя</label>
                                 </div>
                                 <div class='col-sm-12'>
                                     <input type='text' class='form-control'>
@@ -388,7 +327,7 @@
                             <div class='row'>                            
                                 <div class='col-sm-12'><label>&nbsp;</label></div>
                                 <div class='col-sm-12'>
-                                    <input type='submit' value='Відправити'>
+                                    <input type='submit' value='Отправить'>
                                 </div>
                             </div>
                         </div>
@@ -452,7 +391,6 @@
         font-size: 14px;
         color: #222;
         font-weight:bold;
-        box-shadow: 0px 0px 20px rgba(0,0,0,0.2); 
     }
     #map_block .map_info span{
         display:inline-block;
@@ -465,7 +403,7 @@
 <div id="map_block" ng-controller="mapCtrl">
     <div class='container' style='position:relative;'>
         <div class='map_info'>
-            <div><span>Адреса:</span> Хмельницьке шосе 81/47</div>
+            <div><span>Адресс:</span> Хмельницкое шоссе 81/47</div>
             <div><span>Телефон:</span>0980920792</div>
         </div>
     </div>

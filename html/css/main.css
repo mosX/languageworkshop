@@ -47,6 +47,7 @@
 }
 
 body{
+    min-width:1140px;
     font-size: Roboto;
 }
 
@@ -61,9 +62,10 @@ input.form-control,select.form-control{
 .form input[type=submit]{
     height: 44px;
     width:100%;
-    border: 1px solid #fff55a;
-    background:#fff55a;
-    color: #222;
+    border: 1px solid #1EA9E3;
+    background:#1EA9E3;
+    color: white;
+    font-size: 16px;
     border-radius: 4px;
     font-weight:bold;
 }
@@ -84,9 +86,10 @@ input.form-control,select.form-control{
 
 .btn.btn-default{
     height: 44px;    
-    border: 1px solid #fff55a;
-    background:#fff55a;
-    color: #222;
+    border: 1px solid #1EA9E3;
+    background:#1EA9E3;
+    font-size: 14px;
+    color: white;
     border-radius: 4px;
     font-weight:bold;
     padding:10px 20px;
