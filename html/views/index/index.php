@@ -1,15 +1,25 @@
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyChQwAXEXRThQkqgC-xW18anW640loh6IA&sensor=false&libraries=places&v=3"></script>
 
 
-<style>       
+<style>
+   #bannerCarousel .carousel-inner{       
+        height: 600px;
+   }
+   
    #bannerCarousel .item{
-       height: 600px;       
+       
+       height: 600px;
+       /*width:100%;*/
+       top:0px;
+       
+       width:100%;
    }
    #bannerCarousel .item:hover{
        text-decoration: none;
    }
    #bannerCarousel .content{
-       width:1110px;
+       width:100%;
+       height:600px;
        margin:auto;
    }
    #bannerCarousel .title{
@@ -41,21 +51,27 @@
     </ol>
 
     <div class="carousel-inner">            
-        <a href="" class="item active" style="background:url('/html/images/img2_1.jpg') no-repeat center center; background-size: cover">
-            <div class='content'>
-                <div class='title'>ІНДИВІДУАЛЬНІ ЗАНЯТТЯ</div>
+        <div href="" class="item active">
+            <div class='content' style="position:absolute;background:url('/html/images/img2_1.jpg') no-repeat center center; background-size: cover">
+                <div class="container">
+                    <div class='title'>ІНДИВІДУАЛЬНІ ЗАНЯТТЯ</div>
+                </div>
             </div>
-        </a>
-        <a href="" class="item" style="background:url('/html/images/img3.jpg') no-repeat center center; background-size: cover">
-            <div class='content'>
-                <div class='title'>НАВЧАННЯ В НЕВЕЛИКИХ ГРУПАХ</div>
+        </div>
+        <div href="" class="item">
+            <div class='content' style="position:absolute;background:url('/html/images/img3.jpg') no-repeat center center; background-size: cover">
+                <div class="container">
+                    <div class='title'>НАВЧАННЯ В НЕВЕЛИКИХ ГРУПАХ</div>
+                </div>
             </div>
-        </a>
-        <a href="" class="item" style="background:url('/html/images/img1.jpg') no-repeat center center; background-size: cover">
-            <div class='content'>
-                <div class='title'>ПІДГОТОВКА ДО ІСПИТІВ</div>
+        </div>
+        <div href="" class="item">
+            <div class='content' style="position:absolute;background:url('/html/images/img1.jpg') no-repeat center center; background-size: cover">
+                <div class="container">
+                    <div class='title'>ПІДГОТОВКА ДО ІСПИТІВ</div>
+                </div>
             </div>
-        </a>
+        </div>        
     </div>
 
     <a class="carousel-control left" href="#bannerCarousel" data-slide="prev">
@@ -65,6 +81,7 @@
         <span class="glyphicon glyphicon-chevron-right"></span>
     </a>
 </div>
+    
 
 <style>
     #block2{
