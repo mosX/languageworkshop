@@ -64,7 +64,7 @@ $('document').ready(function(){
     }
 
     var reinitTimeout = function(){
-        /*clearTimeout(carusel_interval);
+        clearTimeout(carusel_interval);
 
         carusel_interval = setTimeout(function(){
             if(stop_events == true){
@@ -74,7 +74,7 @@ $('document').ready(function(){
             stop_events = true;
             nextSlider();
             reinitTimeout();
-        },5000);*/
+        },5000);
     }
     reinitTimeout();
 
