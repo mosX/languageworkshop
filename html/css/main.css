@@ -97,3 +97,36 @@ input.form-control,select.form-control{
 .btn.btn-default:hover,.btn.btn-default.active{
     background:none;
 }
+
+/*************CAROUSEL*********/
+ .carousel_custom{
+    position:relative;
+}
+.carousel_custom .carousel-inner .item{
+    height: 600px;
+    width:100%;
+    left:100%;
+    position:absolute;        
+    display:none;
+    /*transition: left 0.4s ease-in;*/
+}
+.carousel_custom .item.active{
+    display:block;
+    top:0px;
+    left:0px;        
+    z-index:0;
+}
+
+.carousel_custom .item.next{
+    display:block;
+    left: 100%;
+    transform:none;
+}
+.carousel_custom .item.prev{
+    display:block;
+    left: -100%;
+    transform:none;
+}
+.carousel_custom .carousel-inner{
+    height: 600px;
+}

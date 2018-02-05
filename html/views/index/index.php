@@ -2,27 +2,17 @@
 
 
 <style>
-   #bannerCarousel .carousel-inner{       
-        height: 600px;
-   }
    
-   #bannerCarousel .item{
-       
-       height: 600px;
-       /*width:100%;*/
-       top:0px;
-       
-       width:100%;
-   }
-   #bannerCarousel .item:hover{
-       text-decoration: none;
-   }
-   #bannerCarousel .content{
+    
+    
+    
+    
+    #bannerCarousel .content{
        width:100%;
        height:600px;
        margin:auto;
-   }
-   #bannerCarousel .title{
+    }
+    #bannerCarousel .title{
        width:700px;
         padding:20px 30px 20px 15px;
         /*background: rgba(77,105,190,0.65);*/
@@ -35,15 +25,10 @@
         margin-top:100px;
         position:absolute;
         bottom:50px;
-   }
-   /*#bannerCarousel .item img{
-       height:100%;
-       margin:auto;
-   }*/
+    }   
 </style>
 
-
-<div id="bannerCarousel" class="carousel slide" data-ride="carousel">
+<div id="bannerCarousel" class="carousel_custom slide">
     <ol class="carousel-indicators">            
         <li data-target="#bannerCarousel" data-slide-to="0" class="active"></li>
         <li data-target="#bannerCarousel" data-slide-to="1" class=""></li>
@@ -71,7 +56,7 @@
                     <div class='title'>ПІДГОТОВКА ДО ІСПИТІВ</div>
                 </div>
             </div>
-        </div>        
+        </div>
     </div>
 
     <a class="carousel-control left" href="#bannerCarousel" data-slide="prev">
@@ -81,7 +66,6 @@
         <span class="glyphicon glyphicon-chevron-right"></span>
     </a>
 </div>
-    
 
 <style>
     #block2{
