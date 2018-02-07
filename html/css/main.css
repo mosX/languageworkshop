@@ -55,9 +55,42 @@ body{
     width:1140px;
 }
 
+.error{
+    color: red;
+    font-size: 12px;
+    font-weight:bold;
+}
+
 input.form-control,select.form-control{
     height: 44px;
 }
+.modal .modal-dialog{
+    width:340px;
+    top:200px;
+}
+.modal .modal-content{
+    background: #1A1B16;    
+}
+.modal .modal-body{
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    padding:0px 40px 40px 40px;;
+}
+
+.modal .close{
+    color: white;
+}
+.modal .modal-header{
+    border:none;
+}
+.modal .modal-title{
+    font-size: 24px;
+    text-align: center;
+    color: #fab80f;
+    margin-top:20px;
+}
+
 
 .form input[type=submit]{
     height: 44px;
@@ -71,17 +104,17 @@ input.form-control,select.form-control{
 }
 
 .btn.btn-primary{
-    height: 38px;
-    padding:8px 20px;
-    border: 1px solid #3D52B0;
-    color: #3D52B0;
-    background: none;
-    font-size:14px;
+    height: 44px;
+    width:100%;
+    border: 1px solid #1EA9E3;
+    background:#1EA9E3;
+    color: white;
+    font-size: 16px;
+    border-radius: 4px;
     font-weight:bold;
-    border-radius: 0px;
 }
 .btn.btn-primary:hover,.btn.btn-primary.active{
-    background:none;
+    background:#1EA9E3;
 }
 
 .btn.btn-default{

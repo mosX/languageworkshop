@@ -4,7 +4,7 @@
 
         }
         
-        public function indexAction(){
+        public function indexAction(){            
             //получаем урок
             $this->m->_db->setQuery(
                         "SELECT `lessons`.* "
@@ -12,8 +12,7 @@
                         . " WHERE `lessons`.`id` = 1"
                     );
             $this->m->_db->loadObject($data);
-            $this->m->lesson = $data;
-            
+            $this->m->lesson = $data;            
             
             //получаем вопросы
             $this->m->_db->setQuery(
@@ -23,11 +22,11 @@
                         . " LEFT JOIN `questions` ON `questions`.`id` = `question_collections`.`question_id`"
                         . " WHERE `question_collections`.`lesson_id` = ".(int)$this->m->lesson->id
                     );
-            $this->m->data = $this->m->_db->loadObjectList('id');
+            $this->m->data = $this->m->_db->loadObjectList('question_id');
             
-            foreach($this->m->data as $item)$ids[] = $item->id;
+            foreach($this->m->data as $item)$ids[] = $item->question_id;
             
-            //получаем вопросы
+            //получаем ответы
             $this->m->_db->setQuery(
                         "SELECT `answer_collections`.* "
                         . " , `answers`.`text`"
@@ -40,7 +39,7 @@
             
             foreach($this->m->answers as $item){
                 $this->m->data[$item->question_id]->answers[] = $item;
-            }            
+            }
         }
         
         public function generateHash(){

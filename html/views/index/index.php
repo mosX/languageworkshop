@@ -1,6 +1,5 @@
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyChQwAXEXRThQkqgC-xW18anW640loh6IA&sensor=false&libraries=places&v=3"></script>
 
-
 <style>
     #bannerCarousel .content{
        width:100%;
@@ -346,14 +345,37 @@
         box-shadow: 0px 0px 60px rgba(255,255,255,0.2);
     }
 </style>
-
-<div id="block3">
+<script>
+    app.controller('feedbackCtrl', ['$scope', '$http', function ($scope, $http){
+            console.log('feedBack');
+            $scope.form = {};
+            $scope.submit = function(event){
+                $http({
+                    url:'/feedback/',
+                    method:'POST',
+                    data:$scope.form
+                }).then(function(ret){
+                    if(ret.data.status == 'error'){
+                        $scope.error = ret.data.error;
+                    }else{
+                        $('#feedbackSuccessModal').modal('show');
+                        $scope.form = {};
+                        $scope.error = {};
+                    }
+                });
+            
+                event.preventDefault();
+            }
+            
+    }]);
+</script>
+<div id="block3" ng-controller="feedbackCtrl">
     <div class='container'>
         <div class='block'>
             <h2>Маєте питання чи потрібна консультація?</h2>
             <h3>Залишіть свої контакти і викладачь проконсультує по всім питанням що Вас цікавлять</h3>            
 
-            <form class='form'>
+            <form class='form' ng-submit="submit($event)">
                 <div class='row'>
                     <div class='col-sm-4'>
                         <div class='form-group'>
@@ -362,7 +384,8 @@
                                     <label>Ім'я</label>
                                 </div>
                                 <div class='col-sm-12'>
-                                    <input type='text' class='form-control'>
+                                    <input type='text' class='form-control' ng-model="form.name">
+                                    <div class="error" ng-if="error.name" ng-cloak="">{{error.name}}</div>
                                 </div>
                             </div>
                         </div>
@@ -374,7 +397,8 @@
                                     <label>Телефон</label>
                                 </div>
                                 <div class='col-sm-12'>
-                                    <input type='text' class='form-control'>
+                                    <input type='text' class='form-control' ng-model="form.phone">
+                                    <div class="error" ng-if="error.phone" ng-cloak="">{{error.phone}}</div>
                                 </div>
                             </div>
                         </div>
@@ -391,6 +415,29 @@
                     </div>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('document').ready(function(){
+        //$('#feedbackSuccessModal').modal('show');
+    });
+</script>
+
+<div class="modal fade" id="feedbackSuccessModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title font-header"><p><strong>Заявка успешно добавлена</strong></p></h4>
+            </div>
+
+            <div class="modal-body">
+                <p>Ваша заявка была принята.</p>
+                <p>С Вами свяжутся в ближайшее время.</p>
+                <button style="margin-top:20px;" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
         </div>
     </div>
 </div>
