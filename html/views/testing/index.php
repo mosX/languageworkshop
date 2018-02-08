@@ -34,7 +34,6 @@
         $scope.handleCurrentQuestion = function(){
             $scope.results[$scope.current_question.question_id] = $scope.current_answer;
             
-            
             $scope.current_answer = 0;
         }
         

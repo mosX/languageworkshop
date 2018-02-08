@@ -79,6 +79,7 @@
                             "SELECT `question_collections`.* "
                             . " , `questions`.`value`"
                             . " , `questions`.`correct`"
+                            . " , `questions`.`score`"
                             . " FROM `question_collections` "
                             . " LEFT JOIN `questions` ON `questions`.`id` = `question_collections`.`question_id`"
                             . " WHERE `question_collections`.`lesson_id` = 1"
@@ -87,22 +88,27 @@
                 $questions = $this->m->_db->loadObjectList();
                 
                 $corrects = 0;
+                $score = 0;
+                
                 foreach($questions as $item){                    
-                    if($results[$item->question_id] == $item->correct) $corrects++;
+                    if($results[$item->question_id] == $item->correct){
+                        $corrects++;
+                        $score += $item->score;                        
+                    }
                 }
                 
-                if($corrects == 0) {
+                /*if($score == 0) {
                     echo '{"status":"success","score":"0"}';
                     return;
-                }
+                }*/
                 
                 $row->lesson_id = 1;
                 $row->hash = $this->generateHash(); //нужно сгенерировать уникальный ключ и записать данные в базу
-                $row->score = $corrects;
+                $row->score = $score;
                 $row->date = date("Y-m-d H:i:s");
                 $row->results = serialize($results);
                 if($this->m->_db->insertObject('testing_results',$row)){
-                    echo '{"status":"success","score":"'.$corrects.'","hash":"'.$row->hash.'"}';
+                    echo '{"status":"success","score":"'.$score.'","hash":"'.$row->hash.'"}';
                 }else{
                     echo '{"status":"error"}';
                 }
