@@ -22,9 +22,9 @@
                         . " LEFT JOIN `questions` ON `questions`.`id` = `question_collections`.`question_id`"
                         . " WHERE `question_collections`.`lesson_id` = ".(int)$this->m->lesson->id
                     );
-            $this->m->data = $this->m->_db->loadObjectList('question_id');
+            $data = $this->m->_db->loadObjectList('question_id');
             
-            foreach($this->m->data as $item)$ids[] = $item->question_id;
+            foreach($data as $item)$ids[] = $item->question_id;
             
             //получаем ответы
             $this->m->_db->setQuery(
@@ -38,8 +38,13 @@
             //p($this->m->answers);
             
             foreach($this->m->answers as $item){
-                $this->m->data[$item->question_id]->answers[] = $item;
+                $data[$item->question_id]->answers[] = $item;
             }
+            
+            foreach($data as $item){    //что бы индексы были по порядку
+                $this->m->data[] = $item;
+            }
+            
         }
         
         public function generateHash(){

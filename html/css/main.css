@@ -103,6 +103,14 @@ input.form-control,select.form-control{
     font-weight:bold;
 }
 
+.btn.btn-primary.unactive{
+    background: #ddd;
+    border :1px solid #ddd;
+    color: #999;
+}
+.btn.btn-primary.unactive:hover{
+    background: #ddd;
+}
 .btn.btn-primary{
     height: 44px;
     width:100%;
@@ -112,6 +120,7 @@ input.form-control,select.form-control{
     font-size: 16px;
     border-radius: 4px;
     font-weight:bold;
+    padding-top: 8px;
 }
 .btn.btn-primary:hover,.btn.btn-primary.active{
     background:#1EA9E3;
