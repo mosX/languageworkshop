@@ -17,11 +17,12 @@
         vertical-align: middle;
     }
     #header .contacts_info svg{
-        width:20px;
-        height:20px;
+        width:28px;
+        height:28px;
         display:inline-block;
         vertical-align: middle;
         fill:white;
+        margin-top:-4px;
     }
     #header .contacts_info{
         color: white;
@@ -29,8 +30,7 @@
     }
     #header .contacts_info span{
         display:block;
-        margin-top:-3px;
-        padding-left:30px;
+        margin-top:-3px;        
     }
     
     #header .navbar-nav a{
@@ -78,7 +78,7 @@
             <ul class="nav navbar-nav">
                 <li class='<?=$this->_controller == 'index' ? 'active':''?>'><a href='/'>ГОЛОВНА</a></li>
                 <li class='<?=$this->_controller == 'about' ? 'active':''?>'><a href='/about/'>ПРО ВИКЛАДАЧА</a></li>
-                <li class='<?=$this->_controller == 'testing' ? 'active':''?>'><a href='testing'>ВИЗНАЧИТИ СВІЙ РІВЕНЬ</a></li>
+                <li class='<?=$this->_controller == 'testing' ? 'active':''?>'><a href='/testing/'>ВИЗНАЧИТИ СВІЙ РІВЕНЬ</a></li>
                 <li class='<?=$this->_controller == 'contacts' ? 'active':''?>'><a href='/contacts/'>КОНТАКТИ</a></li>
             </ul>
                 
@@ -86,9 +86,10 @@
                 <li class='contacts_info'>
                     <div>
                         <svg viewBox="0 0 50 50"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/html/images/115.svg#icon"></use></svg>
-                        <strong>+ 38 (098) 092 07 92</strong>
+                        <strong style="font-size:18px;">+ 38 (098) 092 07 92</strong>
                     </div>
-                    <span>пн- пт  с 9.00 до 18. 00 </span>
+                    <!--<span>пн- пт  с 9.00 до 18. 00 </span>-->
+                    <span>Вінниця, Хмельницьке шосе 81</span>
                 </li>
                 <!--<li>
                     <a href="" class="btn btn-primary">Перезвонить мне</a>

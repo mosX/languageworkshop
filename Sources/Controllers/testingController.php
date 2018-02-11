@@ -4,7 +4,7 @@
 
         }
         
-        public function indexAction(){            
+        public function indexAction(){
             //получаем урок
             $this->m->_db->setQuery(
                         "SELECT `lessons`.* "
@@ -12,7 +12,7 @@
                         . " WHERE `lessons`.`id` = 1"
                     );
             $this->m->_db->loadObject($data);
-            $this->m->lesson = $data;            
+            $this->m->lesson = $data;
             
             //получаем вопросы
             $this->m->_db->setQuery(
@@ -21,6 +21,7 @@
                         . " FROM `question_collections` "
                         . " LEFT JOIN `questions` ON `questions`.`id` = `question_collections`.`question_id`"
                         . " WHERE `question_collections`.`lesson_id` = ".(int)$this->m->lesson->id
+                        . " ORDER BY RAND()"
                     );
             $data = $this->m->_db->loadObjectList('question_id');
             
@@ -33,6 +34,7 @@
                         . " FROM `answer_collections` "
                         . " LEFT JOIN `answers` ON `answers`.`id` = `answer_collections`.`answer_id`"
                         . " WHERE `answer_collections`.`question_id` IN (".  implode(',', $ids).")"
+                        . " ORDER BY RAND()"
                     );
             $this->m->answers = $this->m->_db->loadObjectList();
             //p($this->m->answers);
@@ -43,8 +45,7 @@
             
             foreach($data as $item){    //что бы индексы были по порядку
                 $this->m->data[] = $item;
-            }
-            
+            }            
         }
         
         public function generateHash(){
@@ -67,12 +68,17 @@
                 $this->disableView();
                 $_POST = json_decode(file_get_contents('php://input'), true); 
                 
+                
                 foreach($_POST['results'] as $key=>$item){
                     $ids[] = $key;
                 }
                 
                 $results = $_POST['results'];
-                //p($ids);
+                $username = strip_tags(trim($_POST['username']));
+                if(!$username){
+                    echo '{"status":"error","message":"Вы не ввели ваше имя"}';
+                    return;
+                }
                 
                 //получаем все вопросы по данному уроку
                 $this->m->_db->setQuery(
@@ -106,6 +112,7 @@
                 $row->hash = $this->generateHash(); //нужно сгенерировать уникальный ключ и записать данные в базу
                 $row->score = $score;
                 $row->date = date("Y-m-d H:i:s");
+                $row->username = $username;
                 $row->results = serialize($results);
                 if($this->m->_db->insertObject('testing_results',$row)){
                     echo '{"status":"success","score":"'.$score.'","hash":"'.$row->hash.'"}';

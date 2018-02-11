@@ -18,7 +18,7 @@
 <div id="footer">
     <div class='container'>
         <div class='left pull-left'>
-            <p>Індивидуальні заняття англійскою мовою в Вінниці</p>
+            <p>Індивидуальні заняття англійскою та польською мовою в Вінниці</p>
         </div>
         <div class='right pull-right'>
             <div class='contacts'>+ 38 (098) 092 07 92</div>

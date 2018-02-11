@@ -33,7 +33,7 @@
         <div href="" class="item active">
             <div class='content' style="position:absolute;background:url('/html/images/img2_1.jpg') no-repeat center center; background-size: cover">
                 <div class="container">
-                    <div class='title'>ІНДИВІДУАЛЬНІ ЗАНЯТТЯ</div>
+                    <div class='title'>ІНДИВІДУАЛЬНІ ВИВЧЕННЯ <span style="color: #fab80f">АНГЛІЙСКОЇ</span> ТА <span style="color: #fab80f">ПОЛЬСЬКОЇ</span> МОВИ</div>
                 </div>
             </div>
         </div>
@@ -114,14 +114,15 @@
 
 <div id="block2">
     <div class='container'>        
+        
         <div class="row">
-            <div class="col-sm-7">
+            <div class="col-sm-8">
                 <div class='item'>
                     <div class='title'>КОМУНІКАТИВНА МЕТОДИКА</div>
 
                     <div class='text'>
                         Комунікативна методика, як зрозуміло вже з її назви, спрямована саме на практику спілкування. Призначена для зняття страху перед спілкуванням.
-                        Основною метою цієї методики є навчити студента спочатку вільно розмовляти англійською мовою , а потім думати нею.
+                        Основною метою цієї методики є навчити студента спочатку вільно розмовляти іноземною мовою, а потім думати нею.
                     </div>
                 </div>
 
@@ -144,9 +145,46 @@
                     <div class='text'>Щоб розвивати навички розуміння іноземної мови на слух, необхідні для розуміння живої мови,потрібно знайомитись з автентичними текстами, або тими, які звучать, як автентичні. Це можуть бути фрагменти художніх фільмів, телепередач, діалоги, тощо</div>
                 </div>
             </div>
-            <div class="col-sm-5">
-                <div class="img_block">
+            <div class="col-sm-4">
+                <!--<div class="img_block"></div>-->
+                <style>
+                    .language_block{
+                        margin-top:20px;
+                    }
+                    .language_block .item img{
+                        max-width:200px;
+                        max-height: 200px;
+                    }
+                    .language_block .name{
+                        color: white;
+                        font-size: 28px;
+                        padding-top:80px;
+                    }
+                </style>
+                <div class="language_block">                    
+                    <div class="item">
+                        <div class="row">
+                            <div class="col-sm-12 text-center">
+                                <img src="/html/images/british_flag.png" title="Англійська">
+                            </div>
+                            <!--<div class="col-sm-6">
+                                <div class="name">Английська</div>
+                            </div>-->
+                            
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="row">
+                            <div class="col-sm-12 text-center">
+                                <img src="/html/images/poland_flag.png" title="Польська">
+                            </div>
+                            <!--<div class="col-sm-6">
+                                <div class="name">Польська</div>
+                            </div>-->
+                        </div>
+                    </div>
                 </div>
+                
             </div>
         </div>
     </div>

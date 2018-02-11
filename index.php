@@ -1,7 +1,7 @@
 <?php
 error_reporting(~E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED & ~E_STRICT);
 
-@date_default_timezone_set('Europe/London');
+@date_default_timezone_set('Europe/Kiev');
 
 define('XPATH', dirname(__FILE__) );
     
