@@ -80,6 +80,17 @@
                     return;
                 }
                 
+                //получаем данный вопрос что бы знать условия
+                $this->m->_db->setQuery(
+                            "SELECT `lessons`.* "
+                            . " FROM `lessons` "
+                            . " WHERE `lessons`.`id` = 1"
+                            . " AND `lessons`.`status` = 1"
+                        );
+                $this->m->_db->loadObject($lesson);
+                
+                $terms = unserialize($lesson->terms);
+                
                 //получаем все вопросы по данному уроку
                 $this->m->_db->setQuery(
                             "SELECT `question_collections`.* "
@@ -103,6 +114,17 @@
                     }
                 }
                 
+                $message = '';
+                
+                if($terms){
+                    foreach($terms as $item){
+                        if($score >= $item['from'] && $score <= $item['to']){
+                            $message = $item['text'];
+                            break;
+                        }
+                    }
+                }
+                                
                 /*if($score == 0) {
                     echo '{"status":"success","score":"0"}';
                     return;
@@ -115,7 +137,7 @@
                 $row->username = $username;
                 $row->results = serialize($results);
                 if($this->m->_db->insertObject('testing_results',$row)){
-                    echo '{"status":"success","score":"'.$score.'","hash":"'.$row->hash.'"}';
+                    echo '{"status":"success","score":"'.$score.'","hash":"'.$row->hash.'","message":"'.$message.'"}';
                 }else{
                     echo '{"status":"error"}';
                 }

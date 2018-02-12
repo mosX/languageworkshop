@@ -86,9 +86,9 @@
         $scope.submit = function(event){
             if($(event.target).hasClass('unactive'))return;
             $scope.handleCurrentQuestion();
-            console.log($scope.username);
+            //console.log($scope.username);
             
-            console.log('SUBMIT');
+            //console.log('SUBMIT');
             
             $http({
                 url:'/testing/check/',
@@ -100,6 +100,7 @@
                 if(ret.data.status == 'success'){
                     $scope.score = ret.data.score;
                     $scope.hash = ret.data.hash;
+                    $scope.message = ret.data.message;
                     
                     $scope.end = true;
                     console.log('REPEAT');
@@ -122,12 +123,12 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button class="close" data-dismiss="modal">×</button>
-                    <h4 class="modal-title font-header"><p><strong>Вы успешно прошли тест</strong></p></h4>
+                    <h4 class="modal-title font-header"><p><strong>Ви успішно пройшли тест</strong></p></h4>
                 </div>
 
                 <div class="modal-body">
-                    <p>Вы набрали {{score}} балов.</p>
-                    <p>Вы можете показать этот код что бы ваш преподаватель оценил правильность ответов: <strong>{{hash}}</strong>.</p>
+                    <p>Ви набрали {{score}} балів.</p>                    
+                    <p>{{message}}</p>
                     <button style="margin-top:20px;" class="btn btn-primary" data-dismiss="modal">OK</button>
                 </div>
             </div>
@@ -209,12 +210,12 @@
     </style>
     <div class="block" ng-cloak>
         <div class="again text-center" ng-if="repeat">
-            <div class="btn btn-primary" ng-click="restartLesson($event)" style="width:200px;">Попробовать снова</div>
+            <div class="btn btn-primary" ng-click="restartLesson($event)" style="width:200px;">Спробувати знову</div>
         </div>
         
         <div class="results_block" ng-if="end && !repeat">
             <div class="form-group">
-                <p style="font-weight:bold">Введіть ім'я та прізвище щоб побачити результат.</p>
+                <p style="font-weight:bold">Введіть ім'я та прізвище, щоб побачити результат.</p>
             </div>
 
             <div class="form-group">
@@ -222,17 +223,17 @@
                 <div class="error">{{error}}</div>
             </div>
 
-            <div class="btn btn-primary" ng-click="submit($event)" style="width:200px;">Получить результат</div>
+            <div class="btn btn-primary" ng-click="submit($event)" style="width:200px;">Отримати результат</div>
         </div>
 
         <div class="question_block" ng-cloak="" ng-if="!end && !repeat">
-            <div class="question_left">{{total-questions+1}} из {{total}}</div>
+            <div class="question_left">{{total-questions+1}} / {{total}}</div>
             <div class="question">{{current_question.value}}</div>
             <div class="answers_block">
                 <div ng-click="selectAnswer($event,item.id)" class="item" ng-repeat="item in current_question.answers">{{item.text}}</div>
             </div>
 
-            <div class="btn btn-primary {{!current_answer ? 'unactive':''}}" ng-click="nextQuestion($event)" style="width:200px;">Дальше</div>
+            <div class="btn btn-primary {{!current_answer ? 'unactive':''}}" ng-click="nextQuestion($event)" style="width:200px;">Далі</div>
         </div>
     </div>
 </div>
