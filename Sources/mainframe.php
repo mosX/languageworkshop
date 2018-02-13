@@ -40,7 +40,8 @@ class mainframe {
         $this->parsePath();
         $this->setLang();
         
-        $this->checkPlatform();
+        //$this->checkPlatform();
+        $this->lessons_list = $this->getLessonsList();
         
         
         $this->_user = $this->_auth->getUser();
@@ -54,6 +55,15 @@ class mainframe {
         
         $this->page();
         $this->output();
+    }
+    
+    private function getLessonsList(){
+        $this->_db->setQuery(
+                    "SELECT `lessons`.* "
+                    . " FROM `lessons` WHERE `lessons`.`status` = 1"
+                );
+        $data = $this->_db->loadObjectList();
+        return $data;
     }
     
     private function checkPlatform(){

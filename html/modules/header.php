@@ -73,12 +73,56 @@
             <!--<a style='font-size:26px; color: #fab80f; margin-top:4px;' class="navbar-brand" href="/">LanguageWorkShop</a>-->
             <a style='font-size:26px; color: #fab80f; margin-top:4px;' class="navbar-brand" href="/"><img src="/html/images/logo-trans.png"></a>
         </div>
-
+<script>
+    $('document').ready(function(){
+        $('#header .navbar-nav li').mouseenter(function(){
+            if($('.list',this).length > 0){
+                console.log('DROPDOWN');
+            }
+        });
+    });
+</script>
+<style>
+    #header .navbar-nav li{
+        position:relative;
+    }
+    
+    #header .navbar-nav li .list{
+        display:none;
+        position:absolute;
+        top:100%;
+        width:250px;
+        height: auto;
+        min-height: 200px;
+        background:#433D39;
+        color: white;
+        padding:20px;
+        z-index: 10000;
+    }
+    #header .navbar-nav li:hover .list{
+        display:block;
+    }
+    
+    #header .navbar-nav li .list a{
+        text-decoration: none;
+        font-size: 14px;
+        padding-bottom:5px;
+    }
+</style>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li class='<?=$this->_controller == 'index' ? 'active':''?>'><a href='/'>ГОЛОВНА</a></li>
                 <li class='<?=$this->_controller == 'about' ? 'active':''?>'><a href='/about/'>ПРО ВИКЛАДАЧА</a></li>
-                <li class='<?=$this->_controller == 'testing' ? 'active':''?>'><a href='/testing/'>ВИЗНАЧИТИ СВІЙ РІВЕНЬ</a></li>
+                <li class='<?=$this->_controller == 'testing' ? 'active':''?>'>
+                    <a href='#'>ВИЗНАЧИТИ СВІЙ РІВЕНЬ</a>
+                    <?php if($this->lessons_list){ ?>
+                    <div class='list'>
+                        <?php foreach($this->lessons_list as $item){ ?>
+                            <a href='/testing/?lesson_id=<?=$item->id?>' class='item'><?=$item->name?></a>
+                        <?php } ?>
+                    </div>
+                    <?php } ?>
+                </li>
                 <li class='<?=$this->_controller == 'contacts' ? 'active':''?>'><a href='/contacts/'>КОНТАКТИ</a></li>
             </ul>
                 

@@ -22,6 +22,7 @@
         $scope.end = false; //статус окончания теста
         $scope.repeat = false;  //статус отображения кнопки повторить тест
         $scope.username = '';
+        $scope.lesson_id = <?=(int)$_GET['lesson_id']?>
         
         //считаем сколько есть вопросов всего
         for(var key in $scope.tests){
@@ -89,14 +90,12 @@
             //console.log($scope.username);
             
             //console.log('SUBMIT');
-            
             $http({
                 url:'/testing/check/',
                 method:'POST',
-                data:{'results':$scope.results,'username':$('input[name=username]').val()}
+                data:{'results':$scope.results,'username':$('input[name=username]').val(),'lesson_id':$scope.lesson_id}
             }).then(function(ret){
-                console.log(ret.data);
-                
+                console.log(ret.data);                
                 if(ret.data.status == 'success'){
                     $scope.score = ret.data.score;
                     $scope.hash = ret.data.hash;
@@ -105,6 +104,8 @@
                     $scope.end = true;
                     console.log('REPEAT');
                     $scope.repeat = true;
+                    
+                    $scope.results = ret.data.results;
                     $('#resultsSuccessModal').modal('show');
                 }else{
                     console.log('ERROR');
@@ -117,7 +118,7 @@
     }]);
 </script>
 
-<div class="container" ng-controller="pageCtrl" style="min-height: 800px;">
+<div class="container-fluid" ng-controller="pageCtrl" style="min-height: 800px; position:relative;">    
     <div class="modal fade" id="resultsSuccessModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -140,11 +141,12 @@
             position:relative;
             border: 2px solid #fab80f;
             width:700px;
-            margin:auto;
+            margin-left:200px;
             margin-top:80px;
             border-radius: 12px;
             padding:30px;
             box-shadow:  0px 0px 32px rgba(30,30,30,0.2);
+            margin-bottom:50px;
         }
         .question_block{
             
@@ -177,11 +179,9 @@
             font-size: 22px;
             margin-left: 0px;
         }
-        .question_block .answers_block{
-            
+        .question_block .answers_block{            
             margin-top:20px;
-            margin-bottom:20px;
-            
+            margin-bottom:20px;            
         }
         
         .question_block .answers_block .item{
@@ -208,32 +208,123 @@
             font-size: 18px;
         }        
     </style>
-    <div class="block" ng-cloak>
-        <div class="again text-center" ng-if="repeat">
-            <div class="btn btn-primary" ng-click="restartLesson($event)" style="width:200px;">Спробувати знову</div>
-        </div>
+    <style>
+        #sidebar{
+            width:300px;
+            border-right: 2px solid #fab80f;
+            height: 100%;
+            box-shadow: 0px 0px 25px rgba(30,30,30,0.15);
+            display:inline-block;
+            vertical-align: top;
+            position:absolute;
+            left:0px;
+            top:0px;
+            bottom:0px;
+            background: #433D39;
+        }
+        #sidebar ul{
+            margin:0px;
+            padding:0px;
+        }
+        #sidebar li{
+            height: 60px;
+            background: #342e2a;            
+            margin-bottom:5px;
+        }
+        #sidebar li a{
+            color: white;
+            display:block;
+            width:100%;
+            height: 100%;
+            padding:18px 30px;;
+            font-size: 16px;
+            font-weight:bold;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+            border-bottom: 1px solid transparent;
+            text-decoration: none;
+        }
+        #sidebar li.active a,#sidebar li:hover a{
+            border-bottom: 1px solid #fab80f;
+        }
         
-        <div class="results_block" ng-if="end && !repeat">
-            <div class="form-group">
-                <p style="font-weight:bold">Введіть ім'я та прізвище, щоб побачити результат.</p>
+        .content{
+            position:absolute;
+            left:300px;
+            right:0px;            
+            display:inline-block;
+            vertical-align: top;
+        }
+    </style>
+    <div id='sidebar'>
+        <ul>
+            <?php foreach($this->m->lessons_list as $item){ ?>
+                <li><a href='/testing/?lesson_id=<?=$item->id?>'><?=$item->name?></a></li>
+            <?php } ?>
+        </ul>
+    </div>
+    <div class='content'>
+        <div class="block" ng-cloak>
+            <div class="again text-center" ng-if="repeat">
+                <div class="btn btn-primary" ng-click="restartLesson($event)" style="width:200px;">Спробувати знову</div>
             </div>
 
-            <div class="form-group">
-                <input type="text" class="form-control" value="" name="username">
-                <div class="error">{{error}}</div>
+            <div class="results_block" ng-if="end && !repeat">
+                <div class="form-group">
+                    <p style="font-weight:bold">Введіть ім'я та прізвище, щоб побачити результат.</p>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" value="" name="username">
+                    <div class="error">{{error}}</div>
+                </div>
+
+                <div class="btn btn-primary" ng-click="submit($event)" style="width:200px;">Отримати результат</div>
             </div>
 
-            <div class="btn btn-primary" ng-click="submit($event)" style="width:200px;">Отримати результат</div>
-        </div>
+            <div class="question_block" ng-cloak="" ng-if="!end && !repeat">
+                <div class="question_left">{{total-questions+1}} / {{total}}</div>
+                <div class="question">{{current_question.value}}</div>
+                <div class="answers_block">
+                    <div ng-click="selectAnswer($event,item.id)" class="item" ng-repeat="item in current_question.answers">{{item.text}}</div>
+                </div>
 
-        <div class="question_block" ng-cloak="" ng-if="!end && !repeat">
-            <div class="question_left">{{total-questions+1}} / {{total}}</div>
-            <div class="question">{{current_question.value}}</div>
-            <div class="answers_block">
-                <div ng-click="selectAnswer($event,item.id)" class="item" ng-repeat="item in current_question.answers">{{item.text}}</div>
+                <div class="btn btn-primary {{!current_answer ? 'unactive':''}}" ng-click="nextQuestion($event)" style="width:200px;">Далі</div>
             </div>
 
-            <div class="btn btn-primary {{!current_answer ? 'unactive':''}}" ng-click="nextQuestion($event)" style="width:200px;">Далі</div>
+            <style>
+                #check_results_block .item{
+                    margin-bottom:15px;
+                }
+
+                #check_results_block .question{
+                    font-size: 18px;
+                    margin-bottom:10px;
+                }
+                #check_results_block .answers_block{
+
+                }
+                #check_results_block .answers_block .answer{
+                    margin-left: 20px;
+                    padding-left:10px;
+                    margin-bottom:5px;
+                }
+                #check_results_block .answers_block .selected{
+                    border-left:2px solid red;
+                }
+                #check_results_block .answers_block .correct,#results_block .answers_block .correct.selected{
+                    border-left:2px solid green;
+                }
+            </style>
+            <div id="check_results_block" ng-if='results'>
+                <div class="item" ng-repeat="item in results">
+                    <div class="question">{{item.value}}</div>
+                    <div class='answers_block'>
+                        <div class='answer{{answer.correct ? " correct":""}}{{answer.selected ? " selected":""}}' ng-repeat='answer in item.answers'>{{answer.text}}</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
