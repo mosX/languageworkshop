@@ -147,6 +147,7 @@
             padding:30px;
             box-shadow:  0px 0px 32px rgba(30,30,30,0.2);
             margin-bottom:50px;
+
         }
         .question_block{
             

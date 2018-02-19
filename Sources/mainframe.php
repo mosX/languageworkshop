@@ -47,9 +47,9 @@ class mainframe {
         $this->_user = $this->_auth->getUser();
         //$this->_user = $this->getUser();
         
-        if (is_object($this->_user) && $this->_user->id > 0){
+        /*if (is_object($this->_user) && $this->_user->id > 0){
             $this->_islogin = true;
-        }
+        }*/
         
         if($_GET['datatype']== 'ajax')$this->disableTemplate();
         
