@@ -87,15 +87,12 @@
         $scope.submit = function(event){
             if($(event.target).hasClass('unactive'))return;
             $scope.handleCurrentQuestion();
-            //console.log($scope.username);
             
-            //console.log('SUBMIT');
             $http({
                 url:'/testing/check/',
                 method:'POST',
                 data:{'results':$scope.results,'username':$('input[name=username]').val(),'lesson_id':$scope.lesson_id}
             }).then(function(ret){
-                console.log(ret.data);                
                 if(ret.data.status == 'success'){
                     $scope.score = ret.data.score;
                     $scope.hash = ret.data.hash;

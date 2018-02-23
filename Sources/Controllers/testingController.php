@@ -228,10 +228,6 @@
                     }
                 }
                 
-                /*if($score == 0) {
-                    echo '{"status":"success","score":"0"}';
-                    return;
-                }*/
 
                 $row->lesson_id = $lesson_id;
                 $row->hash = $this->generateHash(); //нужно сгенерировать уникальный ключ и записать данные в базу
@@ -247,10 +243,9 @@
                     $json->status = 'success';
                     $json->score = $score;
                     $json->hash = $row->hash;
-                    $json->message->$message;
+                    $json->message = $message;
                     if($results) $json->results = $results;
                     
-                    //p($json->results);
                     echo json_encode($json);
                     //echo '{"status":"success","score":"'.$score.'","hash":"'.$row->hash.'","message":"'.$message.'"}';
                 }else{
