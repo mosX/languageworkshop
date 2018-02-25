@@ -385,33 +385,31 @@
 </style>
 <script>
     app.controller('feedbackCtrl', ['$scope', '$http', function ($scope, $http){
-            console.log('feedBack');
-            $scope.form = {};
-            $scope.submit = function(event){
-                $http({
-                    url:'/feedback/',
-                    method:'POST',
-                    data:$scope.form
-                }).then(function(ret){
-                    if(ret.data.status == 'error'){
-                        $scope.error = ret.data.error;
-                    }else{
-                        $('#feedbackSuccessModal').modal('show');
-                        $scope.form = {};
-                        $scope.error = {};
-                    }
-                });
-            
-                event.preventDefault();
-            }
-            
+        $scope.form = {};
+        $scope.submit = function(event){
+            $http({
+                url:'/feedback/',
+                method:'POST',
+                data:$scope.form
+            }).then(function(ret){
+                if(ret.data.status == 'error'){
+                    $scope.error = ret.data.error;
+                }else{
+                    $('#feedbackSuccessModal').modal('show');
+                    $scope.form = {};
+                    $scope.error = {};
+                }
+            });
+
+            event.preventDefault();
+        }            
     }]);
 </script>
 <div id="block3" ng-controller="feedbackCtrl">
     <div class='container'>
         <div class='block'>
             <h2>Маєте питання чи потрібна консультація?</h2>
-            <h3>Залишіть свої контакти і викладачь проконсультує по всім питанням що Вас цікавлять</h3>            
+            <h3>Залишіть свої контакти і викладач проконсультує по всім питанням що Вас цікавлять</h3>
 
             <form class='form' ng-submit="submit($event)">
                 <div class='row'>

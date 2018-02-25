@@ -149,14 +149,19 @@
             $answers = $this->m->_db->loadObjectList();
             
             foreach($answers as $item){
-                if($item->id == $result->results[$item->question_id]){
-                     $item->selected = 'true';
+                if($result->results[$item->question_id]['answer']){ //новый вариант со временем
+                    if($item->id == $result->results[$item->question_id]['answer']){
+                         $item->selected = 'true';
+                    }                    
+                }else{  //для старого варианта
+                    if($item->id == $result->results[$item->question_id]){
+                         $item->selected = 'true';
+                    }    
                 }
                 
                 if($data[$item->question_id]->correct == $item->id){
                     $item->correct = 'true';
                 }
-                
                 
                 $data[$item->question_id]->answers[] = $item;                                
             }
@@ -210,10 +215,17 @@
                 $corrects = 0;
                 $score = 0;
                 
-                foreach($questions as $item){                    
-                    if($results[$item->question_id] == $item->correct){
-                        $corrects++;
-                        $score += $item->score;                        
+                foreach($questions as $item){
+                    if($results[$item->question_id]['answer']){
+                        if($results[$item->question_id]['answer'] == $item->correct){
+                            $corrects++;
+                            $score += $item->score;                        
+                        }
+                    }else{
+                        if($results[$item->question_id] == $item->correct){
+                            $corrects++;
+                            $score += $item->score;                        
+                        }
                     }
                 }
                 
@@ -236,15 +248,17 @@
                 $row->username = $username;
                 $row->results = serialize($results);
                 if($this->m->_db->insertObject('testing_results',$row,'id')){
+                    
                     if($lesson->show_answers){
-                        $results = $this->getResults($row->id);
+                        
+                        $results_json = $this->getResults($row->id);
                     }
                     
                     $json->status = 'success';
                     $json->score = $score;
                     $json->hash = $row->hash;
                     $json->message = $message;
-                    if($results) $json->results = $results;
+                    if($results_json) $json->results = $results_json;
                     
                     echo json_encode($json);
                     //echo '{"status":"success","score":"'.$score.'","hash":"'.$row->hash.'","message":"'.$message.'"}';

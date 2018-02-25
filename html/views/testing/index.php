@@ -24,6 +24,9 @@
         $scope.username = '';
         $scope.lesson_id = <?=(int)$_GET['lesson_id']?>
         
+        $scope.start_timestamp = (new Date()).getTime();
+        
+        
         //считаем сколько есть вопросов всего
         for(var key in $scope.tests){
             $scope.questions++;
@@ -40,7 +43,11 @@
         
         $scope.handleCurrentQuestion = function(){
             if(!$scope.current_question) return;
-            $scope.results[$scope.current_question.question_id] = $scope.current_answer;
+            $scope.results[$scope.current_question.question_id] = {};
+            $scope.results[$scope.current_question.question_id].answer = $scope.current_answer;
+            $scope.results[$scope.current_question.question_id].time = (new Date()).getTime() - $scope.start_timestamp;
+            
+            $scope.start_timestamp = (new Date()).getTime();
             
             $scope.current_answer = 0;
         }
@@ -87,7 +94,7 @@
         $scope.submit = function(event){
             if($(event.target).hasClass('unactive'))return;
             $scope.handleCurrentQuestion();
-            
+                        
             $http({
                 url:'/testing/check/',
                 method:'POST',
@@ -248,7 +255,7 @@
         }
         
         .content{
-            position:absolute;
+            position:relative;
             left:300px;
             right:0px;            
             display:inline-block;
