@@ -43,7 +43,6 @@ class mainframe {
         //$this->checkPlatform();
         $this->lessons_list = $this->getLessonsList();
         
-        
         $this->_user = $this->_auth->getUser();
         //$this->_user = $this->getUser();
         
@@ -61,6 +60,7 @@ class mainframe {
         $this->_db->setQuery(
                     "SELECT `lessons`.* "
                     . " FROM `lessons` WHERE `lessons`.`status` = 1"
+                    . " AND `lessons`.`published` = 1"
                 );
         $data = $this->_db->loadObjectList();
         return $data;
