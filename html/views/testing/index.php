@@ -288,11 +288,18 @@
                 <div class="btn btn-primary" ng-click="submit($event)" style="width:200px;">Отримати результат</div>
             </div>
 
+            
+            
             <div class="question_block" ng-cloak="" ng-if="!end && !repeat">
                 <div class="question_left">{{total-questions+1}} / {{total}}</div>
                 <div class="question">{{current_question.value}}</div>
                 <div class="answers_block">
-                    <div ng-click="selectAnswer($event,item.id)" class="item" ng-repeat="item in current_question.answers">{{item.text}}</div>
+                    
+                    <div ng-if='current_question.type == 1' ng-click="selectAnswer($event,item.id)" class="item" ng-repeat="item in current_question.answers">{{item.text}}</div>
+                    
+                    <div ng-if='current_question.type == 2' ng-click="selectAnswer($event,item.id)" class="item" ng-repeat="item in current_question.answers">
+                        <img src='http://languageadmin/assets/images/{{item.filename}}'>
+                    </div>
                 </div>
 
                 <div class="btn btn-primary {{!current_answer ? 'unactive':''}}" ng-click="nextQuestion($event)" style="width:200px;">Далі</div>

@@ -19,6 +19,7 @@
             $this->m->_db->setQuery(
                         "SELECT `question_collections`.* "
                         . " , `questions`.`value`"
+                        . " , `questions`.`type`"
                         . " FROM `question_collections` "
                         . " LEFT JOIN `questions` ON `questions`.`id` = `question_collections`.`question_id`"
                         . " WHERE `question_collections`.`lesson_id` = ".(int)$this->m->lesson->id
@@ -32,21 +33,24 @@
             $this->m->_db->setQuery(
                         "SELECT `answer_collections`.* "
                         . " , `answers`.`text`"
+                        . " , `answers`.`image_id`"
+                        . " , `images`.`filename`"
                         . " FROM `answer_collections` "
                         . " LEFT JOIN `answers` ON `answers`.`id` = `answer_collections`.`answer_id`"
+                        . " LEFT JOIN `images` ON `images`.`id` = `answers`.`image_id`"
                         . " WHERE `answer_collections`.`question_id` IN (".  implode(',', $ids).")"
                         . " ORDER BY RAND()"
                     );
             $this->m->answers = $this->m->_db->loadObjectList();
-            //p($this->m->answers);
-            
+
             foreach($this->m->answers as $item){
                 $data[$item->question_id]->answers[] = $item;
             }
             
             foreach($data as $item){    //что бы индексы были по порядку
                 $this->m->data[] = $item;
-            }            
+            }
+            
         }
         
         /*public function resultsAction(){
