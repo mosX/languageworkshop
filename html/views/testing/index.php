@@ -26,6 +26,11 @@
         
         $scope.start_timestamp = (new Date()).getTime();
         
+        $scope.types = {
+            1:'text_quest',
+            2:'image_quest'
+        }
+        
         
         //считаем сколько есть вопросов всего
         for(var key in $scope.tests){
@@ -189,7 +194,7 @@
             margin-bottom:20px;            
         }
         
-        .question_block .answers_block .item{
+        .question_block .answers_block.text_quest .item{
             border-bottom: 1px solid #fab80f;
             font-size: 16px;
             margin-bottom:15px;
@@ -199,8 +204,30 @@
             padding-top:8px;
             cursor:pointer;
         }
-        .question_block .answers_block .item:hover,.question_block .answers_block .item.active{
+        .question_block .answers_block.text_quest .item:hover,.question_block .answers_block.text_quest .item.active{
             border-left:3px solid #1EA9E3;
+        }
+        
+        .question_block .answers_block.image_quest{
+            text-align: center;
+        }
+        
+        .question_block .answers_block.image_quest .item{            
+            display:inline-block;
+            width:150px;                        
+            height:150px;
+            box-sizing: content-box;
+            margin-bottom:15px;
+            margin-right:15px;            
+            border:2px solid transparent;
+            cursor:pointer;
+        }
+        .question_block .answers_block.image_quest .item img{
+            max-height: 150px;
+            max-width: 150px;
+        }
+        .question_block .answers_block.image_quest .item:hover,.question_block .answers_block.image_quest .item.active{
+            border:2px solid #1EA9E3;
         }
         
         .results_block{
@@ -288,12 +315,10 @@
                 <div class="btn btn-primary" ng-click="submit($event)" style="width:200px;">Отримати результат</div>
             </div>
 
-            
-            
             <div class="question_block" ng-cloak="" ng-if="!end && !repeat">
                 <div class="question_left">{{total-questions+1}} / {{total}}</div>
                 <div class="question">{{current_question.value}}</div>
-                <div class="answers_block">
+                <div class="answers_block {{types[current_question.type]}}">
                     
                     <div ng-if='current_question.type == 1' ng-click="selectAnswer($event,item.id)" class="item" ng-repeat="item in current_question.answers">{{item.text}}</div>
                     
@@ -317,7 +342,7 @@
                 #check_results_block .answers_block{
 
                 }
-                #check_results_block .answers_block .answer{
+                #check_results_block .item[data-type="1"] .answers_block .answer{
                     margin-left: 20px;
                     padding-left:10px;
                     margin-bottom:5px;
@@ -328,12 +353,37 @@
                 #check_results_block .answers_block .correct,#results_block .answers_block .correct.selected{
                     border-left:2px solid green;
                 }
+                
+                #check_results_block .item[data-type="2"] .answer{
+                    width:100px;
+                    height:100px;
+                    display:inline-block;
+                    margin-right: 20px;
+                    box-sizing: content-box;
+                }
+                #check_results_block .item[data-type="2"] .answer img{
+                    max-width:100px;
+                    max-height:100px;
+                }
+
+                #check_results_block .item[data-type="2"] .answers_block .answer{        
+                }
+                #check_results_block .item[data-type="2"] .answers_block .selected{
+                    border:2px solid red;
+                }
+                #check_results_block .item[data-type="2"] .answers_block .correct,#results_block .answers_block .correct.selected{
+                    border:2px solid green;
+                }
             </style>
             <div id="check_results_block" ng-if='results'>
-                <div class="item" ng-repeat="item in results">
+                <div class="item" data-type="{{item.type}}" ng-repeat="item in results">
                     <div class="question">{{item.value}}</div>
                     <div class='answers_block'>
-                        <div class='answer{{answer.correct ? " correct":""}}{{answer.selected ? " selected":""}}' ng-repeat='answer in item.answers'>{{answer.text}}</div>
+                        <div ng-if="item.type == 1" class='answer{{answer.correct ? " correct":""}}{{answer.selected ? " selected":""}}' ng-repeat='answer in item.answers'>{{answer.text}}</div>
+                        
+                        <div ng-if="item.type == 2" class='answer{{answer.correct ? " correct":""}}{{answer.selected ? " selected":""}}' ng-repeat='answer in item.answers'>
+                            <img src="http://languageadmin/assets/images/{{answer.filename}}">
+                        </div>
                     </div>
                 </div>
             </div>

@@ -53,13 +53,13 @@
             
         }
         
-        /*public function resultsAction(){
+        public function resultsAction(){
             $this->m->_db->setQuery(
                         "SELECT `testing_results`.* "
                         . " , `lessons`.`name`"
                         . " FROM `testing_results`"
                         . " LEFT JOIN `lessons` ON `lessons`.`id` = `testing_results`.`lesson_id`"
-                        . " WHERE `testing_results`.`id` = 14"
+                        . " WHERE `testing_results`.`id` = 48"
                         . " LIMIT 1"
                     );
             $this->m->_db->loadObject($result);
@@ -70,6 +70,7 @@
                         "SELECT `question_collections`.* "
                         . " , `questions`.`value`"
                         . " , `questions`.`correct`"
+                        . " , `questions`.`type`"
                         . " FROM `question_collections`"
                         . " LEFT JOIN `questions` ON `questions`.`id` = `question_collections`.`question_id`"
                         . " WHERE `question_collections`.`lesson_id` = ".(int)$result->lesson_id
@@ -81,8 +82,10 @@
             $this->m->_db->setQuery(
                         "SELECT `answer_collections`.* "
                         . " , `answers`.`text`"
+                        . " , `images`.`filename`"
                         . " FROM `answer_collections` "
                         . " LEFT JOIN `answers` ON `answers`.`id` = `answer_collections`.`answer_id`"
+                        . " LEFT JOIN `images` ON `images`.`id` = `answers`.`image_id`"
                         . " WHERE `answer_collections`.`question_id` IN (".  implode(',', $ids).")"
                     );
             $answers = $this->m->_db->loadObjectList();
@@ -102,7 +105,7 @@
             $this->m->data = json_encode($data);
             
             //$this->m->testing = $data;
-        }*/
+        }
         
         public function generateHash(){
             $hash = makeDigitPassword(8);
@@ -135,6 +138,7 @@
                         "SELECT `question_collections`.* "
                         . " , `questions`.`value`"
                         . " , `questions`.`correct`"
+                        . " , `questions`.`type`"
                         . " FROM `question_collections`"
                         . " LEFT JOIN `questions` ON `questions`.`id` = `question_collections`.`question_id`"
                         . " WHERE `question_collections`.`lesson_id` = ".(int)$result->lesson_id
@@ -146,8 +150,10 @@
             $this->m->_db->setQuery(
                         "SELECT `answer_collections`.* "
                         . " , `answers`.`text`"
+                        . " , `images`.`filename`"
                         . " FROM `answer_collections` "
                         . " LEFT JOIN `answers` ON `answers`.`id` = `answer_collections`.`answer_id`"
+                        . " LEFT JOIN `images` ON `images`.`id` = `answers`.`image_id`"
                         . " WHERE `answer_collections`.`question_id` IN (".  implode(',', $ids).")"
                     );
             $answers = $this->m->_db->loadObjectList();

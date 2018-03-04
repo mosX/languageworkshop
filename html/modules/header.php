@@ -26,11 +26,17 @@
     }
     #header .contacts_info{
         color: white;
-        margin-right: 20px;
+        margin-right: 10px!important;
     }
     #header .contacts_info span{
         display:block;
         margin-top:-3px;        
+    }
+    
+    #header #goto_map{
+        max-width: 45px;
+        cursor: pointer;
+        margin-top: -2px;
     }
     
     #header .navbar-nav a{
@@ -123,7 +129,6 @@
                     </div>
                     <?php } ?>
                 </li>
-                <li class='<?=$this->_controller == 'contacts' ? 'active':''?>'><a href='/contacts/'>КОНТАКТИ</a></li>
             </ul>
                 
             <ul class="nav navbar-nav navbar-right">
@@ -132,13 +137,19 @@
                         <svg viewBox="0 0 50 50"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/html/images/115.svg#icon"></use></svg>
                         <strong style="font-size:18px;">+ 38 (098) 092 07 92</strong>
                     </div>
-                    <!--<span>пн- пт  с 9.00 до 18. 00 </span>-->
                     <span>Вінниця, Хмельницьке шосе 81</span>
                 </li>
-                <!--<li>
-                    <a href="" class="btn btn-primary">Перезвонить мне</a>
-                </li>-->
+                <li>
+                    <img id="goto_map" src="/html/images/google-maps.png">
+                </li>
             </ul>
         </div>
     </div>
 </div>
+<script>
+    $('document').ready(function(){
+        $('#goto_map').click(function(){
+            window.scrollTo(0, 2200);
+        });        
+    });
+</script>
