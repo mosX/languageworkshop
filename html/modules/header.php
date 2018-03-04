@@ -120,7 +120,7 @@
                 <li class='<?=$this->_controller == 'index' ? 'active':''?>'><a href='/'>ГОЛОВНА</a></li>
                 <li class='<?=$this->_controller == 'about' ? 'active':''?>'><a href='/about/'>ПРО ВИКЛАДАЧА</a></li>
                 <li class='<?=$this->_controller == 'testing' ? 'active':''?>'>
-                    <a href='#'>ВИЗНАЧИТИ СВІЙ РІВЕНЬ</a>
+                    <a href='#'>ТЕСТУВАННЯ</a>
                     <?php if($this->lessons_list){ ?>
                     <div class='list'>
                         <?php foreach($this->lessons_list as $item){ ?>
