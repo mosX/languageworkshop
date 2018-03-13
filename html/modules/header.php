@@ -129,6 +129,13 @@
                     </div>
                     <?php } ?>
                 </li>
+                
+                <li class='<?=$this->_controller == 'info' ? 'active':''?>'>
+                    <a href='#'>СТАТТІ</a>
+                    <div class='list'>
+                        <a href='/info/article1/' class='item'>Рівні вивчення мов</a>
+                    </div>                    
+                </li>
             </ul>
                 
             <ul class="nav navbar-nav navbar-right">
