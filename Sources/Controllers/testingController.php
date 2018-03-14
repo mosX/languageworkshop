@@ -50,6 +50,9 @@
             foreach($data as $item){    //что бы индексы были по порядку
                 $this->m->data[] = $item;
             }
+        }
+        
+        public function catalogAction(){
             
         }
         

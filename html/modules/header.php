@@ -80,13 +80,13 @@
             <a style='font-size:26px; color: #fab80f; margin-top:4px;' class="navbar-brand" href="/"><img src="/html/images/logo-trans.png"></a>
         </div>
 <script>
-    $('document').ready(function(){
+    /*$('document').ready(function(){
         $('#header .navbar-nav li').mouseenter(function(){
             if($('.list',this).length > 0){
                 console.log('DROPDOWN');
             }
         });
-    });
+    });*/
 </script>
 <style>
     #header .navbar-nav li{
@@ -102,17 +102,30 @@
         min-height: 200px;
         background:#433D39;
         color: white;
-        padding:20px;
         z-index: 10000;
     }
+    
     #header .navbar-nav li:hover .list{
         display:block;
     }
     
     #header .navbar-nav li .list a{
+        border-bottom:1px solid #4f4945;
+        height: 50px;
         text-decoration: none;
         font-size: 14px;
+        padding-top:14px;
         padding-bottom:5px;
+        padding-left: 20px;
+        padding-right: 20px;
+        overflow:hidden;
+        white-space: nowrap;
+        text-overflow:ellipsis;
+    }
+    
+    #header .navbar-nav li .list a:hover{
+        background: #fab80f;
+        color: black;
     }
 </style>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
