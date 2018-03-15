@@ -6,7 +6,7 @@ $config = array(
     "db"   => "languageworkshop",
     
 //    'assets_source' => 'http://newsmarttv.com/assets',
-    'assets_source' => 'http://smarttv.probud.net.ua/assets',
+    'assets_source' => 'http://languageadmin/assets',
 
     'auth_server' => 'http://195.88.159.227:5500/',
 

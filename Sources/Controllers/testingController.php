@@ -53,7 +53,19 @@
         }
         
         public function catalogAction(){
+            $this->m->_db->setQuery(
+                        "SELECT `lessons`.* "
+                        . " , `images`.`filename`"
+                        . " FROM `lessons` "
+                        . " LEFT JOIN `images` ON `images`.`id` = `lessons`.`poster_id`"
+                        . " WHERE `lessons`.`published` = 1 "
+                        . " AND `lessons`.`status` = 1"
+                    );
+            $data = $this->m->_db->loadObjectList();
             
+            foreach($data as $item){
+                $this->m->data[$item->language][] = $item;
+            }
         }
         
         public function resultsAction(){

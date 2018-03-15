@@ -26,7 +26,6 @@
     }
     
     .tests .item_block{
-        text-decoration: none;
         position:relative;
         height: 200px;
         width:340px;
@@ -91,36 +90,42 @@
         });
     });
 </script>
-<style>
-    .language{
-        font-size: 24px;
-        margin:15px 0px;
-    }
-</style>
-<div class='container' style='min-height: 800px;'>
-    <h2>ПЕРЕВІР СВОЇ ЗНАННЯ</h2>
-    <div class='tests'>
-        <div class="row text-center">
-            
-            <?php foreach($this->m->data as $key=>$language){ ?>
-                <?php 
-                    switch($key){
-                        case 'eng':$lang = 'Англійська';break;
-                        case 'pl':$lang = 'Польська';break;
-                    }
-                ?>
-                <div class="language"><?=$lang?></div>
-                <?php foreach($language as $item){ ?>
-                    <a class='item_block'>
-                        <div class="item">
-                            <div class='image_block' style='background: url("<?=$this->m->config->assets_source?>/posters/<?=$item->filename?>") no-repeat center center; background-size: cover;'></div>
-                            <div class='title'><?=$item->name?></div>
-                            <div class='description'><?=$item->description?></div>
-                        </div>
-                    </a>
-                <?php } ?>
-            <?php } ?>
 
+<div class='container' style='min-height: 800px;'>
+    <h2>ПРОВЕРЬ СВОИ ЗНАНИЯ</h2>
+    <div class='tests'>
+        <div class="row">
+            <div class='item_block'>
+                <div class="item">
+                    <div class='image_block' style='background: url("/html/images/img5.jpg") no-repeat center center; background-size: cover;'></div>
+                    <div class='title'>Test</div>
+                    <div class='description'> такой себе тестик e3r243r2 34r 23 r23 r rger dhfuiowehf9oi2qwehjf0o2i0hi2he3o iwfhduj fihwduj hfw ;pp</div>
+                </div>
+            </div>
+
+            <div class='item_block'>
+                <div class="item">
+                    <div class='image_block' style='background: url("/html/images/img5.jpg") no-repeat center center; background-size: cover;'></div>
+                    <div class='title'>Test</div>
+                    <div class='description'> такой себе тестик</div>
+                </div>
+            </div>
+
+            <div class='item_block'>
+                <div class="item">
+                    <div class='image_block' style='background: url("/html/images/img5.jpg") no-repeat center center; background-size: cover;'></div>
+                    <div class='title'>Test</div>
+                    <div class='description'> такой себе тестик</div>
+                </div>
+            </div>
+            
+            <div class='item_block'>
+                <div class="item">
+                    <div class='image_block' style='background: url("/html/images/img5.jpg") no-repeat center center; background-size: cover;'></div>
+                    <div class='title'>Test</div>
+                    <div class='description'> такой себе тестик</div>
+                </div>
+            </div>
         </div>
     </div>    
 </div>
