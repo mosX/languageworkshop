@@ -8,14 +8,29 @@
         $scope.listen = function(event,name){
             $scope.mySound.play();
         }
+        
+        $scope.startStudy = function(event){
+            $('#testingModal').modal('show');
+            
+            $http({
+                url:'/study/get_question/?lesson_id=1',
+                method:'GET',                
+            }).then(function(ret){
+                console.log(ret.data);
+            });
+            
+            //alert('23423');
+            event.preventDefault();
+        }
     }]);
 </script>
 
-<div class="container" ng-controller="pageCtrl">
+<div class="container" ng-controller="pageCtrl" style='padding-bottom:50px;'>
     <script>
-        var mySound = new Audio('/html/audio/6c980a921aa2d8f76ada94a21bd829cd.mp3');
+        //var mySound = new Audio('/html/audio/6c980a921aa2d8f76ada94a21bd829cd.mp3');
         //mySound.play();
     </script>
+    
     <style>
         .listen{
             position:relative;
@@ -58,4 +73,30 @@
     <p>Неопределенный артикль в английском языке имеет два варианта – a и an. Если существительное начинается с согласного звука, то используется форма a, если с гласного – форма an:</p>
     a tree, a worker, a hero
     an apple, an engineer, an hour
+    
+    <div class='btn btn-primary' ng-click='startStudy($event)'>Пройти задание</div>
+    
+    <script>
+        app.controller('testingModalCtrl', ['$scope','$rootScope','$http',function($scope,$http){
+
+        }]);
+    </script>
+    <div ng-controller="testingModalCtrl" class="modal fade" id="testingModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title font-header"><p><strong>Тестирование</strong></p></h4>
+                </div>
+
+                <div class="modal-body">
+                    <form action="" method="POST" ng-submit="submit($event)">
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 </div>
+
