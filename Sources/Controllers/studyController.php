@@ -32,6 +32,8 @@
                         . " FROM `question_collections`"
                         . " LEFT JOIN `questions` ON `questions`.`id` = `question_collections`.`question_id`"
                         . " WHERE `question_collections`.`lesson_id` = ".$lesson_id                        
+                        . " AND `questions`.`status` = 1"
+                        . " AND `question_collections`.`published` = 1"
                         . " ORDER BY RAND() LIMIT 1"
                     );
             $this->m->_db->loadObject($question);
@@ -46,9 +48,9 @@
                         . " WHERE `answer_collections`.`question_id` = ".$question->id                        
                     );
             $answers = $this->m->_db->loadObjectList();
-            
             $question->answers = $answers;
-            p($question);
+            
+            echo json_encode($question);
         }
     }
 ?>

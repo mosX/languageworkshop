@@ -17,15 +17,18 @@
                 method:'GET',                
             }).then(function(ret){
                 console.log(ret.data);
+                
+                $scope.question = ret.data;
             });
             
             //alert('23423');
-            event.preventDefault();
+            if(event)event.preventDefault();
         }
+        $scope.startStudy();
     }]);
 </script>
 
-<div class="container" ng-controller="pageCtrl" style='padding-bottom:50px;'>
+<div class="container" ng-controller="pageCtrl" style='padding-bottom:50px;min-height:800px;'>
     <script>
         //var mySound = new Audio('/html/audio/6c980a921aa2d8f76ada94a21bd829cd.mp3');
         //mySound.play();
@@ -77,26 +80,118 @@
     <div class='btn btn-primary' ng-click='startStudy($event)'>Пройти задание</div>
     
     <script>
-        app.controller('testingModalCtrl', ['$scope','$rootScope','$http',function($scope,$http){
-
+        app.controller('testingModalCtrl', ['$scope','$http',function($scope,$http){
+            $('.answers_block').on('click','.item',function(){
+                $('.answers_block .item').removeClass('active');
+                $(this).addClass('active');
+            });
         }]);
     </script>
+    <style>
+        #testingModal .modal-dialog{
+            width:800px;
+        }
+        #testingModal .task_title{
+            padding-left:20px;
+            text-align: left;
+            font-weight: bold;
+            font-size: 32px;
+            line-height: 38px;
+            color:#dddddd;
+        }
+        #testingModal .modal-body{
+            text-align: left;
+        }
+        #testingModal .modal-footer{
+            padding-left:40px;
+            padding-right:40px;
+        }
+                                    
+        #testingModal .question_text{
+            font-size:22px;
+            color:#dddddd;            
+        }
+        #testingModal .answers_block{
+            margin:20px 0px;
+        }
+        #testingModal .answers_block.pick_one .item{
+            border: 2px solid #5b5b5b;
+            margin-bottom:10px;           
+            padding: 10px 20px 13px 20px;
+            border-radius: 25px; 
+            cursor:pointer;
+        }
+        
+        #testingModal .answers_block.pick_one .item:hover,#testingModal .answers_block.pick_one .item.active{
+            border:2px solid #1caff6;
+            color: #0194dc;            
+        }
+        
+        #testingModal .answers_block.pick_one .item.active{
+            background: #011e2b;
+        }
+        
+        #testingModal .skip_btn{
+            width:150px;
+            height:44px;
+            border: 2px solid #bfbfbf;
+            color: #dddddd;
+            float:left;            
+            border-radius: 25px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            padding:8px 0px;
+            cursor:pointer;
+        }
+        #testingModal .skip_btn:hover{
+            background: #2f2e2e;
+        }
+        #testingModal .check_btn{
+            width:150px;
+            height:44px;
+            border: 2px solid #65ab00;
+            background: #65ab00;
+            color: white;
+            float:left;            
+            border-radius: 25px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            padding:8px 0px;
+            cursor:pointer;
+            float:right;
+        }
+        #testingModal .check_btn:hover{
+            border: 2px solid #6eb903;
+            background: #6eb903;
+        }
+    </style>
     <div ng-controller="testingModalCtrl" class="modal fade" id="testingModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button class="close" data-dismiss="modal">×</button>
-                    <h4 class="modal-title font-header"><p><strong>Тестирование</strong></p></h4>
+                    <h4 class="modal-title font-header">
+                        <div ng-if="question.type == 1" class="task_title">Выберите правильный ответ</div>
+                    </h4>
                 </div>
 
                 <div class="modal-body">
-                    <form action="" method="POST" ng-submit="submit($event)">
-
-                    </form>
+                    <div class="question_text" ng-if="question.type == 1">{{question.value}}</div>
+                    
+                    <div class="answers_block pick_one">
+                        <div class="item" ng-repeat="item in question.answers">{{item.text}}</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="skip_btn">Skip</div>
+                    <div class="check_btn">Check</div>
                 </div>
             </div>
         </div>
     </div>
     
 </div>
+
 

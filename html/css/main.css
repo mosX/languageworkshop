@@ -48,7 +48,7 @@
 
 body{
     min-width:1140px;
-    font-size: Roboto;
+    font-family: Roboto;
 }
 
 .container{
@@ -66,9 +66,9 @@ input.form-control,select.form-control{
 }
 .modal .modal-dialog{
     width:340px;
-    top:200px;
+    top:100px;
 }
-.modal .modal-content{
+.modal .modal-content{  
     background: #1A1B16;    
 }
 .modal .modal-body{
@@ -76,6 +76,10 @@ input.form-control,select.form-control{
     font-size: 18px;
     text-align: center;
     padding:0px 40px 40px 40px;;
+}
+.modal .modal-footer{
+    border:none;
+    background: #272822;
 }
 
 .modal .close{
