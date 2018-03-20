@@ -13,7 +13,8 @@
             $('#testingModal').modal('show');
             
             $http({
-                url:'/study/get_question/?lesson_id=1',
+                //url:'/study/get_question/?lesson_id=1',
+                url:'/study/start/?lesson_id=1',
                 method:'GET',                
             }).then(function(ret){
                 console.log(ret.data);
@@ -167,6 +168,7 @@
             background: #6eb903;
         }
     </style>
+    
     <div ng-controller="testingModalCtrl" class="modal fade" id="testingModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -184,6 +186,7 @@
                         <div class="item" ng-repeat="item in question.answers">{{item.text}}</div>
                     </div>
                 </div>
+                
                 <div class="modal-footer">
                     <div class="skip_btn">Skip</div>
                     <div class="check_btn">Check</div>
@@ -191,7 +194,6 @@
             </div>
         </div>
     </div>
-    
 </div>
 
 
