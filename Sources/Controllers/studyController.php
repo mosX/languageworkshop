@@ -63,31 +63,76 @@
             
             $question = $this->getRandomQuestion($lesson->id);
             
-            $json->session = new stdClass();
-            $json->current = new stdClass();
-            $json->current->question_id = $question->id;
-            $json->current->correct = $question->correct;
+            $obj->session = new stdClass();
+            $obj->current = new stdClass();
+            $obj->current->question_id = $question->id;
+            $obj->current->correct = $question->correct;
             
             if($question->answers){
                 foreach($question->answers as $item){
-                    $json->current->answers[] = ['id'=>$item->id,'link_id'=>$item->collection_id];
+                    $obj->current->answers[] = ['id'=>$item->id,'link_id'=>$item->collection_id];
                 }
             }
             
             //добавляем в сессию
             $row->lesson_id = $lesson->id;
-            $row->value = serialize($json);
+            $row->value = serialize($obj);
             $row->status = 1;
             $row->date = date("Y-m-d H:i:s");
-            if($this->m->_db->insertObject('',$row,'id')){
+            if($this->m->_db->insertObject('sessions',$row,'id')){
                 $question->session_id = $row->id;
                 echo json_encode($question);
-            }else{
+            }else{               
                 echo '{"status":"error"}';
             }
             
             /*$json->session = {};
             $json->current = $question;*/
+        }
+        
+        public function check_answerAction(){
+            $this->disableTemplate();
+            $this->disableView();
+            
+            $answer_id = (int)$_GET['answer'];
+            $session_id = (int)$_GET['session'];
+            
+            //получаем данную сессию
+            $this->m->_db->setQuery(
+                        "SELECT `sessions`.* "
+                        . " FROM `sessions` "
+                        . " WHERE `sessions`.`id` = ".$session_id
+                        . " LIMIT 1"
+                    );
+            
+            $this->m->_db->loadObject($data);
+            
+            $session = unserialize($data->value);
+            
+            //проверяем или правильно ответил
+            if($session->current->result == null){
+                if($session->current->correct == $answer_id){
+                    $session->current->result = true;
+                }else{
+                    $session->current->result = false;                                    
+                }
+            }
+            
+            //обновляем сессию
+            $this->m->_db->setQuery(
+                        "UPDATE `sessions` "
+                        . " SET `sessions`.`value` = '".  serialize($session)."'"
+                        . " WHERE `sessions`.`id` = ".$session_id
+                        . " LIMIT 1"
+                    );
+            $this->m->_db->query();
+            
+            //var_dump($session->current->result);
+            if($session->current->result == true){
+                echo '{"status":"success"}';
+            }else if($session->current->result == false){
+                echo '{"status":"false","correct":"'.$session->current->correct.'"}';
+            }
         }
         
         public function get_questionAction(){

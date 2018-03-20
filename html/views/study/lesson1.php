@@ -1,5 +1,8 @@
 <script>
     app.controller('pageCtrl', ['$scope', '$http', function ($scope, $http){
+        $scope.session_id = '';
+        $scope.answer_id = '';
+        
         $scope.initAutdios = function(){
             $scope.mySound = new Audio('/html/audio/the.mp3');        
         }
@@ -15,15 +18,41 @@
             $http({
                 //url:'/study/get_question/?lesson_id=1',
                 url:'/study/start/?lesson_id=1',
-                method:'GET',                
+                method:'GET',
             }).then(function(ret){
                 console.log(ret.data);
                 
+                if(ret.data.status == 'error'){
+                    console.log('ERROR');
+                    return;
+                }
+                
+                $scope.session_id = ret.data.session_id;
                 $scope.question = ret.data;
             });
             
             //alert('23423');
             if(event)event.preventDefault();
+        }
+        
+        $scope.selectAnswer = function(event,id){
+            $('.answers_block .item').removeClass('active');
+            $(event.target).closest('.item').addClass('active');
+            $scope.answer_id = id;
+            
+            event.preventDefault();
+        }
+            
+        $scope.check = function(event){
+            $http({
+                url:'/study/check_answer/?answer='+$scope.answer_id+'&session='+$scope.session_id,
+                type:'GET',
+            }).then(function(ret){
+                console.log(ret.data);
+                
+            });
+            
+            event.preventDefault();
         }
         $scope.startStudy();
     }]);
@@ -82,10 +111,8 @@
     
     <script>
         app.controller('testingModalCtrl', ['$scope','$http',function($scope,$http){
-            $('.answers_block').on('click','.item',function(){
-                $('.answers_block .item').removeClass('active');
-                $(this).addClass('active');
-            });
+            
+            
         }]);
     </script>
     <style>
@@ -183,13 +210,13 @@
                     <div class="question_text" ng-if="question.type == 1">{{question.value}}</div>
                     
                     <div class="answers_block pick_one">
-                        <div class="item" ng-repeat="item in question.answers">{{item.text}}</div>
+                        <div class="item" ng-click="selectAnswer($event,item.collection_id)" ng-repeat="item in question.answers">{{item.text}}</div>
                     </div>
                 </div>
                 
                 <div class="modal-footer">
                     <div class="skip_btn">Skip</div>
-                    <div class="check_btn">Check</div>
+                    <div class="check_btn" ng-click="check($event)">Check</div>
                 </div>
             </div>
         </div>
