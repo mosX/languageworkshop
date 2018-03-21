@@ -56,7 +56,7 @@
                 console.log(ret.data);
                 if(ret.data.status == 'success'){
                     if(ret.data.result == 'correct'){
-                        //$('.answers_block .item.active').addClass('correct');
+                        $('.answers_block .item.active').addClass('correct');
                         $scope.result = 'correct';
                     }else if(ret.data.result == 'wrong'){
                         //$('.answers_block .item.active').addClass('wrong');
@@ -89,6 +89,10 @@
                 $scope.result = null;
                 $scope.question = ret.data;
             });
+        }
+        
+        $scope.skip = function(event){
+            event.preventDefault();
         }
         $scope.startStudy();
     }]);
@@ -196,11 +200,12 @@
             background: #3c0504;
         }
         
-        #testingModal .answers_block.pick_one .item:hover,#testingModal .answers_block.pick_one .item.active{
+        #testingModal .answers_block.pick_one:not(.stop) .item:hover,#testingModal .answers_block.pick_one .item.active{
             border:2px solid #1caff6;
             color: #0194dc;            
             background: transparent;
         }
+        
         
         #testingModal .answers_block.pick_one .item.active{
             background: #011e2b;
@@ -266,13 +271,13 @@
                 <div class="modal-body">
                     <div class="question_text" ng-if="question.type == 1">{{question.value}}</div>
                     
-                    <div class="answers_block pick_one">
+                    <div class="answers_block pick_one {{result?'stop':''}}">
                         <div class="item {{item.collection_id == question.correct ? 'correct':''}} {{item.collection_id == question.wrong ? 'wrong':''}}" ng-click="selectAnswer($event,item.collection_id)" ng-repeat="item in question.answers">{{item.text}}</div>
                     </div>
                 </div>
                 
                 <div class="modal-footer">
-                    <div ng-if="!result" class="skip_btn">Skip</div>
+                    <div ng-if="!result" ng-click="skip($event)" class="skip_btn">Skip</div>
                     
                     <div ng-if="!result" class="check_btn" ng-click="check($event)">Check</div>
                     <div ng-if="result == 'correct'" class="check_btn correct" ng-click="next()">Далее</div>

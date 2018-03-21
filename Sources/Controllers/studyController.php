@@ -47,7 +47,7 @@
             return $question;
         }
         
-        public function getRandomQuestion($lesson_id){
+        public function getRandomQuestion($lesson_id,$exceptions = null){
             $this->m->_db->setQuery(
                         "SELECT `question_collections`.`question_id` "
                         . ", `questions`.*"
@@ -56,9 +56,12 @@
                         . " WHERE `question_collections`.`lesson_id` = ".$lesson_id                        
                         . " AND `questions`.`status` = 1"
                         . " AND `question_collections`.`published` = 1"
+                        . ($exceptions ?  " AND `question_collections`.`question_id` NOT IN (".implode(',',$exceptions).")": "")
                         . " ORDER BY RAND() LIMIT 1"
                     );
             $this->m->_db->loadObject($question);
+            
+            if(!$question) return false;
             
             //получаем вопросы
             $this->m->_db->setQuery(
@@ -66,7 +69,8 @@
                         . " , `answers`.*"
                         . " FROM `answer_collections` "
                         . " LEFT JOIN `answers` ON `answers`.`id` = `answer_collections`.`answer_id` "
-                        . " WHERE `answer_collections`.`question_id` = ".$question->id                        
+                        . " WHERE `answer_collections`.`question_id` = ".$question->id
+                        . " ORDER BY RAND()"
                     );
             $answers = $this->m->_db->loadObjectList();
             $question->answers = $answers;
@@ -89,7 +93,7 @@
         }
         
         public function addNewSession($question,$lesson_id){
-            $obj->history = new stdClass();
+            $obj->history = array();
             $obj->session = new stdClass();
             $obj->current = new stdClass();
             $obj->current->question_id = $question->id;
@@ -208,9 +212,9 @@
             
             //var_dump($session->current->result);
             if($session->current->result == 'correct'){
-                echo '{"status":"success","result":"true"}';
+                echo '{"status":"success","result":"correct"}';
             }else if($session->current->result == 'wrong'){
-                echo '{"status":"success","result":"false","correct":"'.$session->current->correct.'","wrong":"'.$session->current->wrong.'"}';
+                echo '{"status":"success","result":"wrong","correct":"'.$session->current->correct.'","wrong":"'.$session->current->wrong.'"}';
             }
         }
         
@@ -242,20 +246,26 @@
                     );
             $this->m->_db->loadObject($session);
             
-            if(!$session) return;
+            if(!$session){
+                echo '{"status":"error"}';
+                return;
+            }
             
             $value = unserialize($session->value);
-            
             
             if(!$value->current->result){    //если вопрос еще не выбран
                 echo '{"status":"error"}';
                 return false;
             }
-            
-            //получаем опять рандомный вопрос данного урока
-            $question = $this->getRandomQuestion($session->lesson_id);
-                        
             $value->history[] = $value->current;
+            //получаем уже использованные вопросы
+            foreach($value->history as $item)$ids[] = $item->question_id;
+                
+            //получаем опять рандомный вопрос данного урока
+            $question = $this->getRandomQuestion($session->lesson_id,$ids); //который еще не участвовал
+            if(!$question){
+                $question = $this->getRandomQuestion($session->lesson_id);  //который уже участвовал
+            }
             
             $value->current = new stdClass();
             $value->current->question_id = $question->id;
@@ -268,7 +278,6 @@
                     $value->current->answers[] = ['id'=>$item->id,'link_id'=>$item->collection_id];
                 }
             }
-            
             
             if($this->updateSession($session_id,$value)){
                 echo json_encode($question);
