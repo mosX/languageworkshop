@@ -2,6 +2,7 @@
     app.controller('pageCtrl', ['$scope', '$http', function ($scope, $http){
         $scope.session_id = '';
         $scope.answer_id = '';
+        $scope.result = null;
         
         $scope.initAutdios = function(){
             $scope.mySound = new Audio('/html/audio/the.mp3');        
@@ -27,6 +28,8 @@
                     return;
                 }
                 
+                $scope.result = ret.data.result;
+                
                 $scope.session_id = ret.data.session_id;
                 $scope.question = ret.data;
             });
@@ -36,6 +39,8 @@
         }
         
         $scope.selectAnswer = function(event,id){
+            if($scope.result != null) return;
+            
             $('.answers_block .item').removeClass('active');
             $(event.target).closest('.item').addClass('active');
             $scope.answer_id = id;
@@ -49,10 +54,41 @@
                 type:'GET',
             }).then(function(ret){
                 console.log(ret.data);
-                
+                if(ret.data.status == 'success'){
+                    if(ret.data.result == 'correct'){
+                        //$('.answers_block .item.active').addClass('correct');
+                        $scope.result = 'correct';
+                    }else if(ret.data.result == 'wrong'){
+                        //$('.answers_block .item.active').addClass('wrong');
+                        $scope.question.wrong = ret.data.wrong;
+                        
+                        $scope.result = 'wrong';
+                    }                    
+                    $scope.question.correct = ret.data.correct ;
+                    
+                    $('.answers_block .item').removeClass('active');
+                }else{
+                    console.log('ERROR');
+                }
             });
             
             event.preventDefault();
+        }
+        
+        $scope.next = function(){
+            $http({
+                url:'/study/next/?session='+$scope.session_id,
+                method:'GET'
+            }).then(function(ret){
+                console.log(ret.data);
+                if(ret.data.status == 'error'){
+                    console.log('ERROR');
+                    return false;
+                }
+                
+                $scope.result = null;
+                $scope.question = ret.data;
+            });
         }
         $scope.startStudy();
     }]);
@@ -112,7 +148,6 @@
     <script>
         app.controller('testingModalCtrl', ['$scope','$http',function($scope,$http){
             
-            
         }]);
     </script>
     <style>
@@ -149,10 +184,22 @@
             border-radius: 25px; 
             cursor:pointer;
         }
+        #testingModal .answers_block.pick_one .item.correct{
+            background:#172503;
+            border: 2px solid #65ab00;
+            color: #63a702;
+        }
+        
+        #testingModal .answers_block.pick_one .item.wrong{
+            border: 2px solid #e70800;
+            color: #d31711;
+            background: #3c0504;
+        }
         
         #testingModal .answers_block.pick_one .item:hover,#testingModal .answers_block.pick_one .item.active{
             border:2px solid #1caff6;
             color: #0194dc;            
+            background: transparent;
         }
         
         #testingModal .answers_block.pick_one .item.active{
@@ -190,6 +237,16 @@
             cursor:pointer;
             float:right;
         }
+        #testingModal .check_btn.wrong{
+            background: #e70800;
+            border: 2px solid #e70800;
+        }
+        
+        #testingModal .check_btn.wrong:hover{
+            background: #d90902;
+            border: 2px solid #d90902;
+        }
+        
         #testingModal .check_btn:hover{
             border: 2px solid #6eb903;
             background: #6eb903;
@@ -210,13 +267,16 @@
                     <div class="question_text" ng-if="question.type == 1">{{question.value}}</div>
                     
                     <div class="answers_block pick_one">
-                        <div class="item" ng-click="selectAnswer($event,item.collection_id)" ng-repeat="item in question.answers">{{item.text}}</div>
+                        <div class="item {{item.collection_id == question.correct ? 'correct':''}} {{item.collection_id == question.wrong ? 'wrong':''}}" ng-click="selectAnswer($event,item.collection_id)" ng-repeat="item in question.answers">{{item.text}}</div>
                     </div>
                 </div>
                 
                 <div class="modal-footer">
-                    <div class="skip_btn">Skip</div>
-                    <div class="check_btn" ng-click="check($event)">Check</div>
+                    <div ng-if="!result" class="skip_btn">Skip</div>
+                    
+                    <div ng-if="!result" class="check_btn" ng-click="check($event)">Check</div>
+                    <div ng-if="result == 'correct'" class="check_btn correct" ng-click="next()">Далее</div>
+                    <div ng-if="result == 'wrong'" class="check_btn wrong" ng-click="next()">Далее</div>
                 </div>
             </div>
         </div>
