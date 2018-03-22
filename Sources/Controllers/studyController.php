@@ -37,8 +37,10 @@
             $this->m->_db->setQuery(
                         "SELECT `answer_collections`.`id` as collection_id "
                         . " , `answers`.*"
+                        . " , `images`.`filename`"
                         . " FROM `answer_collections` "
                         . " LEFT JOIN `answers` ON `answers`.`id` = `answer_collections`.`answer_id` "
+                        . " LEFT JOIN `images` ON `images`.`id` = `answers`.`image_id`"
                         . " WHERE `answer_collections`.`question_id` = ".$question->id                        
                     );
             $answers = $this->m->_db->loadObjectList();
@@ -67,8 +69,10 @@
             $this->m->_db->setQuery(
                         "SELECT `answer_collections`.`id` as collection_id "
                         . " , `answers`.*"
+                        . " , `images`.`filename`"
                         . " FROM `answer_collections` "
                         . " LEFT JOIN `answers` ON `answers`.`id` = `answer_collections`.`answer_id` "
+                        . " LEFT JOIN `images` ON `images`.`id` = `answers`.`image_id`"
                         . " WHERE `answer_collections`.`question_id` = ".$question->id
                         . " ORDER BY RAND()"
                     );
@@ -173,6 +177,11 @@
             
             $answer_id = (int)$_GET['answer'];
             $session_id = (int)$_GET['session'];
+            
+            if(!$answer_id){
+                echo '{"status":"error","message":"Вы не выбрали ответ"}';
+                return;
+            }
                         
             //получаем данную сессию
             $this->m->_db->setQuery(

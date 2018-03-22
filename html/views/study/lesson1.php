@@ -3,6 +3,7 @@
         $scope.session_id = '';
         $scope.answer_id = '';
         $scope.result = null;
+        $scope.selected_answer = {};
         
         $scope.initAutdios = function(){
             $scope.mySound = new Audio('/html/audio/the.mp3');        
@@ -11,6 +12,20 @@
             
         $scope.listen = function(event,name){
             $scope.mySound.play();
+        }
+        
+        $scope.setAnswersView = function(type){
+            switch(parseInt(type)){
+                case 1 : $scope.viewType = 'pick_one';break;
+                case 2 : $scope.viewType = 'pick_image';break;
+                case 3 : 
+                    $scope.viewType = 'missed_word';
+                    $scope.question.value = ($scope.question.value).split('____');
+                    break;
+                case 4 : $scope.viewType = 'translate';break;
+                case 5 : $scope.viewType = 'listen_pick';break;
+                case 6 : $scope.viewType = 'listen_write';break;
+            }
         }
         
         $scope.startStudy = function(event){
@@ -32,18 +47,24 @@
                 
                 $scope.session_id = ret.data.session_id;
                 $scope.question = ret.data;
+                
+                //$scope.question.value = 'test <span>111</span> test';
+                
+                $scope.setAnswersView($scope.question.type);
             });
             
             //alert('23423');
             if(event)event.preventDefault();
         }
         
-        $scope.selectAnswer = function(event,id){
+        $scope.selectAnswer = function(event,item){
             if($scope.result != null) return;
+            
+            $scope.selected_answer = item;
             
             $('.answers_block .item').removeClass('active');
             $(event.target).closest('.item').addClass('active');
-            $scope.answer_id = id;
+            $scope.answer_id = item.collection_id;
             
             event.preventDefault();
         }
@@ -80,6 +101,9 @@
                 url:'/study/next/?session='+$scope.session_id,
                 method:'GET'
             }).then(function(ret){
+                $scope.answer_id = 0;
+                $scope.selected_answer = {};
+                
                 console.log(ret.data);
                 if(ret.data.status == 'error'){
                     console.log('ERROR');
@@ -88,6 +112,8 @@
                 
                 $scope.result = null;
                 $scope.question = ret.data;
+                
+                $scope.setAnswersView($scope.question.type);
             });
         }
         
@@ -181,6 +207,8 @@
         #testingModal .answers_block{
             margin:20px 0px;
         }
+        
+        
         #testingModal .answers_block.pick_one .item{
             border: 2px solid #5b5b5b;
             margin-bottom:10px;           
@@ -198,16 +226,94 @@
             border: 2px solid #e70800;
             color: #d31711;
             background: #3c0504;
-        }
-        
+        }        
         #testingModal .answers_block.pick_one:not(.stop) .item:hover,#testingModal .answers_block.pick_one .item.active{
             border:2px solid #1caff6;
             color: #0194dc;            
             background: transparent;
+        }        
+        #testingModal .answers_block.pick_one .item.active{
+            background: #011e2b;
         }
         
         
-        #testingModal .answers_block.pick_one .item.active{
+        #testingModal .answers_block.missed_word{
+            margin-left:-10px;
+            margin-right:-10px;
+        }
+        #testingModal .answers_block.missed_word .item{
+            width:auto; 
+            display:inline-block;
+            margin-right:10px;
+            margin-left:10px;
+            
+            border: 2px solid #5b5b5b;
+            margin-bottom:10px;           
+            padding: 10px 20px 13px 20px;
+            border-radius: 25px; 
+            cursor:pointer;
+        }
+        #testingModal .answers_block.missed_word .item.correct{
+            background:#172503;
+            border: 2px solid #65ab00;
+            color: #63a702;
+        }
+        
+        #testingModal .answers_block.missed_word .item.wrong{
+            border: 2px solid #e70800;
+            color: #d31711;
+            background: #3c0504;
+        }        
+        #testingModal .answers_block.missed_word:not(.stop) .item:hover,#testingModal .answers_block.missed_word .item.active{
+            border:2px solid #1caff6;
+            color: #0194dc;            
+            background: transparent;
+        }        
+        #testingModal .answers_block.missed_word .item.active{
+            background: #011e2b;
+        }
+        
+        
+        
+        #testingModal .answers_block.pick_image{
+            margin-left:-10px;
+            margin-right:-10px;
+        }
+        #testingModal .answers_block.pick_image.stop .item:not(.correct) img{
+            opacity:0.3;
+        }
+        #testingModal .answers_block.pick_image .item{
+            text-align: center;
+            width:164px; 
+            height:164px;
+            display:inline-block;
+            margin-right:10px;
+            margin-left:10px;            
+            border: 2px solid #5b5b5b;
+            margin-bottom:10px;            
+            cursor:pointer;
+        }
+        #testingModal .answers_block.pick_image .item img{
+            max-width: 100%;
+            max-height: 100%;
+        }
+        #testingModal .answers_block.pick_image .item.correct{
+            background:#172503;
+            border: 2px solid #65ab00;
+            color: #63a702;
+        }
+        
+        #testingModal .answers_block.pick_image .item.wrong{
+            border: 2px solid #e70800;
+            color: #d31711;
+            background: #3c0504;
+        }        
+        #testingModal .answers_block.pick_image:not(.stop) .item:hover,#testingModal .answers_block.pick_image .item.active{
+            border:2px solid #1caff6;
+            color: #0194dc;            
+            background: transparent;
+        }        
+        #testingModal .answers_block.pick_image .item.active{
             background: #011e2b;
         }
         
@@ -265,14 +371,48 @@
                     <button class="close" data-dismiss="modal">×</button>
                     <h4 class="modal-title font-header">
                         <div ng-if="question.type == 1" class="task_title">Выберите правильный ответ</div>
+                        <div ng-if="question.type == 2" class="task_title">Выберите правильное изображение</div>
+                        <div ng-if="question.type == 3" class="task_title">Выберите пропущенное слово</div>
                     </h4>
                 </div>
-
+                <style>
+                    .question_text .word{
+                        display:inline-block;
+                        position:relative;
+                        min-width:50px;
+                        font-size:22px;
+                        text-align: center;
+                        padding:0px 5px;
+                        
+                    }
+                    .question_text .word:after{
+                        content:'';
+                        left:0px;        
+                        position:absolute;
+                        bottom:-1px;
+                        height: 1px;
+                        background: white;
+                        width:100%;
+                    }
+                </style>
+                
                 <div class="modal-body">
                     <div class="question_text" ng-if="question.type == 1">{{question.value}}</div>
+                    <div class="question_text" ng-if="question.type == 2">{{question.value}}</div>
+                    <div class="question_text" ng-if="question.type == 3">{{question.value[0]}}<span class="word">{{selected_answer.text}}</span>{{question.value[1]}}</div>
                     
-                    <div class="answers_block pick_one {{result?'stop':''}}">
-                        <div class="item {{item.collection_id == question.correct ? 'correct':''}} {{item.collection_id == question.wrong ? 'wrong':''}}" ng-click="selectAnswer($event,item.collection_id)" ng-repeat="item in question.answers">{{item.text}}</div>
+                    <div class="answers_block {{viewType}} {{result?'stop':''}}">
+                        <div ng-if="question.type == 1" class="item {{item.collection_id == question.correct ? 'correct':''}} {{item.collection_id == question.wrong ? 'wrong':''}}" ng-click="selectAnswer($event,item)" ng-repeat="item in question.answers" ng-cloak>
+                            {{item.text}}
+                        </div>
+                        
+                        <div ng-if="question.type == 2" class="item {{item.collection_id == question.correct ? 'correct':''}} {{item.collection_id == question.wrong ? 'wrong':''}}" ng-click="selectAnswer($event,item)" ng-repeat="item in question.answers" ng-cloak>
+                            <img src="<?=$this->m->config->assets_source?>/images/{{item.filename}}">
+                        </div>
+                        
+                        <div ng-if="question.type == 3" class="item {{item.collection_id == question.correct ? 'correct':''}} {{item.collection_id == question.wrong ? 'wrong':''}}" ng-click="selectAnswer($event,item)" ng-repeat="item in question.answers" ng-cloak>
+                            {{item.text}}
+                        </div>
                     </div>
                 </div>
                 

@@ -323,7 +323,7 @@
                     <div ng-if='current_question.type == 1' ng-click="selectAnswer($event,item.id)" class="item" ng-repeat="item in current_question.answers">{{item.text}}</div>
                     
                     <div ng-if='current_question.type == 2' ng-click="selectAnswer($event,item.id)" class="item" ng-repeat="item in current_question.answers">
-                        <img src='http://languageadmin/assets/images/{{item.filename}}'>
+                        <img src='<?=$this->m->config->assets_source?>/images/{{item.filename}}'>
                     </div>
                 </div>
 
