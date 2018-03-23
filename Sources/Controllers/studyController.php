@@ -25,8 +25,10 @@
         
         public function restoreQuestion($session){
             $this->m->_db->setQuery(
-                        "SELECT `questions`.* "                        
+                        "SELECT `questions`.* "
+                        . " , `audios`.`filename` as audio"
                         . " FROM `questions`"
+                        . " LEFT JOIN `audios` ON `audios`.`id` = `questions`.`audio_id`"
                         . " WHERE `questions`.`id` = ".$session->current->question_id
                         . " AND `questions`.`status` = 1"
                         . " LIMIT 1"
@@ -57,7 +59,7 @@
                         . " LEFT JOIN `questions` ON `questions`.`id` = `question_collections`.`question_id`"
                         . " WHERE `question_collections`.`lesson_id` = ".$lesson_id                        
                         . " AND `questions`.`status` = 1"
-                        . " AND `question_collections`.`published` = 1"
+                        . " AND `question_collections`.`published` = 1"                    
                         . ($exceptions ?  " AND `question_collections`.`question_id` NOT IN (".implode(',',$exceptions).")": "")
                         . " ORDER BY RAND() LIMIT 1"
                     );
@@ -72,7 +74,7 @@
                         . " , `images`.`filename`"
                         . " FROM `answer_collections` "
                         . " LEFT JOIN `answers` ON `answers`.`id` = `answer_collections`.`answer_id` "
-                        . " LEFT JOIN `images` ON `images`.`id` = `answers`.`image_id`"
+                        . " LEFT JOIN `images` ON `images`.`id` = `answers`.`image_id`"                        
                         . " WHERE `answer_collections`.`question_id` = ".$question->id
                         . " ORDER BY RAND()"
                     );
@@ -100,6 +102,7 @@
             $obj->history = array();
             $obj->session = new stdClass();
             $obj->current = new stdClass();
+            $obj->current->type = $question->type;
             $obj->current->question_id = $question->id;
             $obj->current->correct = $question->correct;
             
@@ -175,10 +178,10 @@
             $this->disableTemplate();
             $this->disableView();
             
-            $answer_id = (int)$_GET['answer'];
+            $answer = $_GET['answer'];
             $session_id = (int)$_GET['session'];
             
-            if(!$answer_id){
+            if(!$answer){
                 echo '{"status":"error","message":"Вы не выбрали ответ"}';
                 return;
             }
@@ -200,14 +203,38 @@
             
             $session = unserialize($data->value);
             
-            //проверяем или правильно ответил            
-            if($session->current->result == null){
-                if($session->current->correct == $answer_id){
+            if($session->current->type == 6 || $session->current->type == 4){    //если вводим в инпут
+                foreach($session->current->answers as $item) $ids[] = $item['id'];
+                
+                $this->m->_db->setQuery(
+                            "SELECT `answers`.* "
+                            . " FROM `answers` WHERE `answers`.`id` IN (".implode(',',$ids).")"
+                        );
+                $ret = $this->m->_db->loadObjectList();
+                
+                $correct = false;
+                foreach($ret as $item){
+                    if($answer == $item->text){
+                        $correct = true;
+                        break;
+                    }
+                }
+                
+                if($correct){
                     $session->current->result = 'correct';
                 }else{
-                    
-                    $session->current->wrong = $answer_id;
                     $session->current->result = 'wrong';
+                }
+            }else{
+                //проверяем или правильно ответил            
+                if($session->current->result == null){
+                    if($session->current->correct == (int)$answer){
+                        $session->current->result = 'correct';
+                    }else{
+
+                        $session->current->wrong = (int)$answer;
+                        $session->current->result = 'wrong';
+                    }
                 }
             }
             
@@ -278,6 +305,7 @@
             
             $value->current = new stdClass();
             $value->current->question_id = $question->id;
+            $value->current->type = $question->type;
             $value->current->correct = $question->correct;
             
             unset($question->correct);

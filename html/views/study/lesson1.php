@@ -4,14 +4,19 @@
         $scope.answer_id = '';
         $scope.result = null;
         $scope.selected_answer = {};
-        
-        $scope.initAutdios = function(){
+                
+        /*$scope.initAutdios = function(){
             $scope.mySound = new Audio('/html/audio/the.mp3');        
         }
-        $scope.initAutdios();
+        $scope.initAutdios();*/
             
-        $scope.listen = function(event,name){
-            $scope.mySound.play();
+        $scope.listen = function(event){
+            console.log($scope.question);
+            
+            var sound = new Audio('<?=$this->m->config->assets_source?>/audios/'+$scope.question.audio);
+            sound.play();
+            
+            event.preventDefault();
         }
         
         $scope.setAnswersView = function(type){
@@ -70,8 +75,14 @@
         }
             
         $scope.check = function(event){
+            if($scope.question.type == 6 || $scope.question.type == 4){
+                var answer = $('#answer_input').val();
+            }else{
+                var answer = $scope.answer_id;
+            }
+            
             $http({
-                url:'/study/check_answer/?answer='+$scope.answer_id+'&session='+$scope.session_id,
+                url:'/study/check_answer/?answer='+answer+'&session='+$scope.session_id,
                 type:'GET',
             }).then(function(ret){
                 console.log(ret.data);
@@ -103,8 +114,8 @@
             }).then(function(ret){
                 $scope.answer_id = 0;
                 $scope.selected_answer = {};
+                $('#answer_input').val('');
                 
-                console.log(ret.data);
                 if(ret.data.status == 'error'){
                     console.log('ERROR');
                     return false;
@@ -209,30 +220,31 @@
         }
         
         
-        #testingModal .answers_block.pick_one .item{
+        
+        #testingModal .answers_block.pick_one .item, #testingModal .answers_block.listen_pick .item{
             border: 2px solid #5b5b5b;
             margin-bottom:10px;           
             padding: 10px 20px 13px 20px;
             border-radius: 25px; 
             cursor:pointer;
         }
-        #testingModal .answers_block.pick_one .item.correct{
+        #testingModal .answers_block.pick_one .item.correct,#testingModal .answers_block.listen_pick .item.correct{
             background:#172503;
             border: 2px solid #65ab00;
             color: #63a702;
         }
         
-        #testingModal .answers_block.pick_one .item.wrong{
+        #testingModal .answers_block.pick_one .item.wrong,#testingModal .answers_block.listen_pick .item.wrong{
             border: 2px solid #e70800;
             color: #d31711;
             background: #3c0504;
         }        
-        #testingModal .answers_block.pick_one:not(.stop) .item:hover,#testingModal .answers_block.pick_one .item.active{
+        #testingModal .answers_block.pick_one:not(.stop) .item:hover,#testingModal .answers_block.pick_one .item.active, #testingModal .answers_block.listen_pick:not(.stop) .item:hover,#testingModal .answers_block.listen_pick .item.active{
             border:2px solid #1caff6;
             color: #0194dc;            
             background: transparent;
         }        
-        #testingModal .answers_block.pick_one .item.active{
+        #testingModal .answers_block.pick_one .item.active,#testingModal .answers_block.listen_pick .item.active{
             background: #011e2b;
         }
         
@@ -317,6 +329,9 @@
             background: #011e2b;
         }
         
+        
+        
+        
         #testingModal .skip_btn{
             width:150px;
             height:44px;
@@ -373,6 +388,9 @@
                         <div ng-if="question.type == 1" class="task_title">Выберите правильный ответ</div>
                         <div ng-if="question.type == 2" class="task_title">Выберите правильное изображение</div>
                         <div ng-if="question.type == 3" class="task_title">Выберите пропущенное слово</div>
+                        <div ng-if="question.type == 4" class="task_title">Переведите текст</div>
+                        <div ng-if="question.type == 5" class="task_title">Прослушайте и выберите правильный вариант</div>
+                        <div ng-if="question.type == 6" class="task_title">Прослушайте и напишите что вы услышали</div>
                     </h4>
                 </div>
                 <style>
@@ -400,6 +418,9 @@
                     <div class="question_text" ng-if="question.type == 1">{{question.value}}</div>
                     <div class="question_text" ng-if="question.type == 2">{{question.value}}</div>
                     <div class="question_text" ng-if="question.type == 3">{{question.value[0]}}<span class="word">{{selected_answer.text}}</span>{{question.value[1]}}</div>
+                    <div class="question_text" ng-if="question.type == 4">{{question.value}}</div>
+                    <div class="question_text" ng-if="question.type == 5"><div class="btn btn-primary" ng-click="listen($event)">Прослушать</div></div>
+                    <div class="question_text" ng-if="question.type == 6"><div class="btn btn-primary" ng-click="listen($event)">Прослушать</div></div>
                     
                     <div class="answers_block {{viewType}} {{result?'stop':''}}">
                         <div ng-if="question.type == 1" class="item {{item.collection_id == question.correct ? 'correct':''}} {{item.collection_id == question.wrong ? 'wrong':''}}" ng-click="selectAnswer($event,item)" ng-repeat="item in question.answers" ng-cloak>
@@ -412,6 +433,18 @@
                         
                         <div ng-if="question.type == 3" class="item {{item.collection_id == question.correct ? 'correct':''}} {{item.collection_id == question.wrong ? 'wrong':''}}" ng-click="selectAnswer($event,item)" ng-repeat="item in question.answers" ng-cloak>
                             {{item.text}}
+                        </div>
+                        
+                        <div ng-if="question.type == 5" class="item {{item.collection_id == question.correct ? 'correct':''}} {{item.collection_id == question.wrong ? 'wrong':''}}" ng-click="selectAnswer($event,item)" ng-repeat="item in question.answers" ng-cloak>
+                            {{item.text}}
+                        </div>
+                        
+                        <div ng-if="question.type == 4" class="item" ng-cloak>
+                            <input type="text" class="form-control" id="answer_input">
+                        </div>
+                        
+                        <div ng-if="question.type == 6" class="item" ng-cloak>
+                            <input type="text" class="form-control" id="answer_input">
                         </div>
                     </div>
                 </div>
