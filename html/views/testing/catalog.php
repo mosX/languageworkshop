@@ -111,7 +111,7 @@
                 ?>
                 <div class="language"><?=$lang?></div>
                 <?php foreach($language as $item){ ?>
-                    <a class='item_block'>
+                    <a href="/testing/?lesson_id=<?=$item->id?>" class='item_block'>
                         <div class="item">
                             <div class='image_block' style='background: url("<?=$this->m->config->assets_source?>/posters/<?=$item->filename?>") no-repeat center center; background-size: cover;'></div>
                             <div class='title'><?=$item->name?></div>

@@ -1,7 +1,7 @@
 <?php
     class studyController extends Model {
         public function init(){
-
+            $this->m->addCss('questions');
         }
         
         public function indexAction(){

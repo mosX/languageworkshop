@@ -11,13 +11,20 @@
     .item ul li:hover,.item ul li.active{
         border-left:3px solid #1EA9E3;
     }
+    
+    .question_block{
+        margin-top:70px;
+    }
 </style>
 
 <script>
     app.controller('pageCtrl', ['$scope', '$http', function ($scope, $http){
         $scope.tests = <?=$this->m->data ? json_encode($this->m->data) : '{}'?>;
+        
+        $scope.percents = 0;
         $scope.questions = 0;
-        $scope.current_question_index = 0;
+        
+        $scope.question_index = 0;
         $scope.results = {};
         $scope.end = false; //статус окончания теста
         $scope.repeat = false;  //статус отображения кнопки повторить тест
@@ -26,10 +33,21 @@
         
         $scope.start_timestamp = (new Date()).getTime();
         
-        $scope.types = {
+        $scope.selected_answer = '';
+        
+        $scope.types = {    
+            1:'pick_one',
+            2:'pick_image',
+            3:'missed_word',
+            4:'translate',
+            5:'listen_pick',
+            6:'listen_write'
+        }
+        
+        /*$scope.types = {
             1:'text_quest',
             2:'image_quest'
-        }
+        }*/
         
         
         //считаем сколько есть вопросов всего
@@ -37,35 +55,70 @@
             $scope.questions++;
         }
         $scope.total = $scope.questions;
-        console.log($scope.total);
+        //console.log($scope.tests);
+       
+       $scope.listen = function(event){
+            console.log($scope.question);
+            
+            var sound = new Audio('<?=$this->m->config->assets_source?>/audios/'+$scope.question.audio);
+            sound.play();
+            
+            event.preventDefault();
+        }
        
         $scope.setCurrentQuestion = function(){
             //устанавливаем текущий активный вопрос
-            $scope.current_question = $scope.tests[$scope.current_question_index];
+            $scope.question = $scope.tests[$scope.question_index];
+            if(!$scope.question) return;
+            
+            if($scope.question.type == 3){  //пропущеное слово
+                $scope.question.value = ($scope.question.value).split('____');
+            }
+                
+            $scope.percents = ($scope.total-$scope.questions+1) / ($scope.total/100);
+            
+            console.log("Current Question",$scope.question);
         }
         
         $scope.setCurrentQuestion();
         
         $scope.handleCurrentQuestion = function(){
-            if(!$scope.current_question) return;
-            $scope.results[$scope.current_question.question_id] = {};
-            $scope.results[$scope.current_question.question_id].answer = $scope.current_answer;
-            $scope.results[$scope.current_question.question_id].time = (new Date()).getTime() - $scope.start_timestamp;
+            if(!$scope.question) return;
+            console.log($scope.question);
+            $scope.results[$scope.question.question_id] = {};
             
+            if($scope.question.type == 1 || $scope.question.type == 2 || $scope.question.type == 3 || $scope.question.type == 5){
+                $scope.results[$scope.question.question_id].answer = $scope.selected_answer.id;
+            }else if($scope.question.type == 4 || $scope.question.type == 6){
+                $scope.results[$scope.question.question_id].answer = $('#answer_input').val();
+            }
+            
+            $scope.results[$scope.question.question_id].time = (new Date()).getTime() - $scope.start_timestamp;
+            
+            console.log($scope.results);
             $scope.start_timestamp = (new Date()).getTime();
             
-            $scope.current_answer = 0;
+            $scope.selected_answer = 0;
         }
         
         $scope.nextQuestion = function(event){
-            if($(event.target).hasClass('unactive'))return;
+            //if($(event.target).hasClass('unactive'))return;
             
             //проверяем или выбран ответ
             //$('.question_block .item.active').
-            if(!$scope.current_answer){
-                console.log('Вы должны выбрать ответ');
-                event.preventDefault();
-                return;
+            
+            if($scope.question.type == 4 || $scope.question.type == 6){                
+                if(($('#answer_input').val()).length == 0){
+                    console.log('Вы должны написать ответ');
+                    event.preventDefault();
+                    return;
+                }
+            }else{
+                if(!$scope.selected_answer){
+                    console.log('Вы должны выбрать ответ');
+                    event.preventDefault();
+                    return;
+                }
             }
             
             //добавляем в массив 
@@ -74,7 +127,7 @@
             
             if($scope.questions == 0) $scope.end = true;
             
-            $scope.current_question_index++;
+            $scope.question_index++;
             $scope.setCurrentQuestion();
             
             event.preventDefault();
@@ -86,7 +139,8 @@
             $('.item').removeClass('active');
             $(parent).addClass('active');
             
-            $scope.current_answer = answer;
+            //$scope.current_answer = answer;
+            $scope.selected_answer = answer;
             
             event.preventDefault();
         }
@@ -127,7 +181,7 @@
     }]);
 </script>
 
-<div class="container-fluid" ng-controller="pageCtrl" style="min-height: 800px; position:relative;">    
+<div class="container" ng-controller="pageCtrl" style="min-height: 800px; position:relative;">    
     <div class="modal fade" id="resultsSuccessModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -146,90 +200,6 @@
     </div>
 
     <style>
-        .block{
-            position:relative;
-            border: 2px solid #fab80f;
-            width:700px;
-            margin-left:200px;
-            margin-top:80px;
-            border-radius: 12px;
-            padding:30px;
-            box-shadow:  0px 0px 32px rgba(30,30,30,0.2);
-            margin-bottom:50px;
-
-        }
-        .question_block{
-            
-        }
-        .question_block .btn{
-            display:block;            
-            margin:auto;
-            margin-top:30px;
-        }
-        .question_block .question_left{
-            position:absolute;
-            border-left:2px solid #fab80f;
-            border-bottom:2px solid #fab80f;
-            border-radius: 8px;
-            width:auto;
-            height: 34px;
-            text-align: center;
-            padding-top:3px;
-            padding-left:10px;
-            padding-right:10px;            
-            font-size: 18px;
-            color: #1EA9E3;
-            font-weight:bold;
-            top:0px;
-            right:0px;
-        }
-        
-        .question_block .question{
-            text-align: center;
-            font-size: 22px;
-            margin-left: 0px;
-        }
-        .question_block .answers_block{            
-            margin-top:20px;
-            margin-bottom:20px;            
-        }
-        
-        .question_block .answers_block.text_quest .item{
-            border-bottom: 1px solid #fab80f;
-            font-size: 16px;
-            margin-bottom:15px;
-            height:40px;
-            border-left:3px solid transparent;
-            padding-left:20px;
-            padding-top:8px;
-            cursor:pointer;
-        }
-        .question_block .answers_block.text_quest .item:hover,.question_block .answers_block.text_quest .item.active{
-            border-left:3px solid #1EA9E3;
-        }
-        
-        .question_block .answers_block.image_quest{
-            text-align: center;
-        }
-        
-        .question_block .answers_block.image_quest .item{            
-            display:inline-block;
-            width:150px;                        
-            height:150px;
-            box-sizing: content-box;
-            margin-bottom:15px;
-            margin-right:15px;            
-            border:2px solid transparent;
-            cursor:pointer;
-        }
-        .question_block .answers_block.image_quest .item img{
-            max-height: 150px;
-            max-width: 150px;
-        }
-        .question_block .answers_block.image_quest .item:hover,.question_block .answers_block.image_quest .item.active{
-            border:2px solid #1EA9E3;
-        }
-        
         .results_block{
             width:500px;
             margin:auto;
@@ -240,153 +210,182 @@
             font-size: 18px;
         }        
     </style>
+    
     <style>
-        #sidebar{
-            width:300px;
-            border-right: 2px solid #fab80f;
-            height: 100%;
-            box-shadow: 0px 0px 25px rgba(30,30,30,0.15);
-            display:inline-block;
-            vertical-align: top;
-            position:absolute;
-            left:0px;
-            top:0px;
-            bottom:0px;
-            background: #433D39;
+        #check_results_block .item{
+            margin-bottom:15px;
+            
         }
-        #sidebar ul{
-            margin:0px;
-            padding:0px;
+        #check_results_block .item img{
+            display:block;
+            margin:auto;
         }
-        #sidebar li{
-            height: 60px;
-            background: #342e2a;            
+
+        #check_results_block .question{
+            font-size: 18px;
+            margin-bottom:10px;
+        }
+        #check_results_block .answers_block{
+
+        }
+        #check_results_block .item[data-type="1"] .answers_block .answer{
+            margin-left: 20px;
+            padding-left:10px;
             margin-bottom:5px;
         }
-        #sidebar li a{
-            color: white;
-            display:block;
-            width:100%;
-            height: 100%;
-            padding:18px 30px;;
-            font-size: 16px;
-            font-weight:bold;
-            overflow: hidden;
-            text-overflow:ellipsis;
-            white-space: nowrap;
-            border-bottom: 1px solid transparent;
-            text-decoration: none;
+        #check_results_block .answers_block .selected{
+            border-left:2px solid red;
         }
-        #sidebar li.active a,#sidebar li:hover a{
-            border-bottom: 1px solid #fab80f;
+        #check_results_block .answers_block .correct,#results_block .answers_block .correct.selected{
+            border-left:2px solid green;
         }
-        
-        .content{
-            position:relative;
-            left:300px;
-            right:0px;            
+
+        #check_results_block .item[data-type="2"] .answer{
+            width:100px;
+            height:100px;
             display:inline-block;
-            vertical-align: top;
+            margin-right: 20px;
+            box-sizing: content-box;
+        }
+        #check_results_block .item[data-type="2"] .answer img{
+            max-width:100px;
+            max-height:100px;
+        }
+
+        #check_results_block .item[data-type="2"] .answers_block .answer{        
+        }
+        #check_results_block .item[data-type="2"] .answers_block .selected{
+            border:2px solid red;
+        }
+        #check_results_block .item[data-type="2"] .answers_block .correct,#results_block .answers_block .correct.selected{
+            border:2px solid green;
         }
     </style>
-    <div id='sidebar'>
-        <ul>
-            <?php foreach($this->m->lessons_list as $item){ ?>
-                <li><a href='/testing/?lesson_id=<?=$item->id?>'><?=$item->name?></a></li>
-            <?php } ?>
-        </ul>
-    </div>
-    <div class='content'>
-        <div class="block" ng-cloak>
-            <div class="again text-center" ng-if="repeat">
-                <div class="btn btn-primary" ng-click="restartLesson($event)" style="width:200px;">Спробувати знову</div>
+  
+        <div style="margin-top:40px;margin-bottom:20px;" class="again text-center" ng-if="repeat">
+            <div class="btn btn-primary" ng-click="restartLesson($event)" style="width:200px;">Спробувати знову</div>
+        </div>
+
+        <div class="results_block" ng-if="end && !repeat">
+            <div class="form-group">
+                <p style="font-weight:bold">Введіть ім'я та прізвище, щоб побачити результат.</p>
             </div>
 
-            <div class="results_block" ng-if="end && !repeat">
-                <div class="form-group">
-                    <p style="font-weight:bold">Введіть ім'я та прізвище, щоб побачити результат.</p>
-                </div>
-
-                <div class="form-group">
-                    <input type="text" class="form-control" value="" name="username">
-                    <div class="error">{{error}}</div>
-                </div>
-
-                <div class="btn btn-primary" ng-click="submit($event)" style="width:200px;">Отримати результат</div>
+            <div class="form-group">
+                <input type="text" class="form-control" value="" name="username">
+                <div class="error">{{error}}</div>
             </div>
 
-            <div class="question_block" ng-cloak="" ng-if="!end && !repeat">
-                <div class="question_left">{{total-questions+1}} / {{total}}</div>
-                <div class="question">{{current_question.value}}</div>
-                <div class="answers_block {{types[current_question.type]}}">
-                    
-                    <div ng-if='current_question.type == 1' ng-click="selectAnswer($event,item.id)" class="item" ng-repeat="item in current_question.answers">{{item.text}}</div>
-                    
-                    <div ng-if='current_question.type == 2' ng-click="selectAnswer($event,item.id)" class="item" ng-repeat="item in current_question.answers">
-                        <img src='<?=$this->m->config->assets_source?>/images/{{item.filename}}'>
-                    </div>
-                </div>
+            <div class="btn btn-primary" ng-click="submit($event)" style="width:200px;">Отримати результат</div>
+        </div>
 
-                <div class="btn btn-primary {{!current_answer ? 'unactive':''}}" ng-click="nextQuestion($event)" style="width:200px;">Далі</div>
-            </div>
-
+        <div class="question_block" ng-cloak="" ng-if="!end && !repeat">
+            <!--<div class="question_left">{{total-questions+1}} / {{total}}</div>-->
             <style>
-                #check_results_block .item{
-                    margin-bottom:15px;
+                .progressbar_block{
+                    font-size: 0px;
                 }
-
-                #check_results_block .question{
-                    font-size: 18px;
-                    margin-bottom:10px;
-                }
-                #check_results_block .answers_block{
-
-                }
-                #check_results_block .item[data-type="1"] .answers_block .answer{
-                    margin-left: 20px;
-                    padding-left:10px;
-                    margin-bottom:5px;
-                }
-                #check_results_block .answers_block .selected{
-                    border-left:2px solid red;
-                }
-                #check_results_block .answers_block .correct,#results_block .answers_block .correct.selected{
-                    border-left:2px solid green;
-                }
-                
-                #check_results_block .item[data-type="2"] .answer{
-                    width:100px;
-                    height:100px;
+                .progressbar{
+                    height: 10px;
+                    width:100%;
+                    background: black;
+                    border: 1px solid #5b5b5b;
+                    border-radius: 5px;
+                    position: relative;
+                    
+                    width:80%;
+                    font-size: 16px;
                     display:inline-block;
-                    margin-right: 20px;
-                    box-sizing: content-box;
+                    vertical-align: middle;
                 }
-                #check_results_block .item[data-type="2"] .answer img{
-                    max-width:100px;
-                    max-height:100px;
+                .progressbar_block .counter{
+                    display: inline-block;                    
+                    vertical-align: middle;
+                    width:20%;
+                    text-align: center;
+                    color: white;
+                    font-size: 18px;
                 }
-
-                #check_results_block .item[data-type="2"] .answers_block .answer{        
-                }
-                #check_results_block .item[data-type="2"] .answers_block .selected{
-                    border:2px solid red;
-                }
-                #check_results_block .item[data-type="2"] .answers_block .correct,#results_block .answers_block .correct.selected{
-                    border:2px solid green;
+                .progressbar .inner_progressbar{
+                    border-radius: 5px 0px 0px 5px;
+                    position:absolute;
+                    top:0px;
+                    bottom:0px;
+                    left:0px;
+                    background: #65ab00;
                 }
             </style>
-            <div id="check_results_block" ng-if='results'>
-                <div class="item" data-type="{{item.type}}" ng-repeat="item in results">
-                    <div class="question">{{item.value}}</div>
-                    <div class='answers_block'>
-                        <div ng-if="item.type == 1" class='answer{{answer.correct ? " correct":""}}{{answer.selected ? " selected":""}}' ng-repeat='answer in item.answers'>{{answer.text}}</div>
                         
-                        <div ng-if="item.type == 2" class='answer{{answer.correct ? " correct":""}}{{answer.selected ? " selected":""}}' ng-repeat='answer in item.answers'>
-                            <img src="http://languageadmin/assets/images/{{answer.filename}}">
-                        </div>
+            <div class="question_body">
+                <div class="progressbar_block">
+                    <div class="progressbar">
+                        <div class="inner_progressbar" style="width:{{percents}}%;"></div>
+                    </div>
+                    <div class="counter">{{total-questions+1}} / {{total}}</div>
+                </div>
+                
+                <div ng-if="question.type == 1" class="task_title">Выберите правильный ответ</div>
+                <div ng-if="question.type == 2" class="task_title">Выберите правильное изображение</div>
+                <div ng-if="question.type == 3" class="task_title">Выберите пропущенное слово</div>
+                <div ng-if="question.type == 4" class="task_title">Переведите текст</div>
+                <div ng-if="question.type == 5" class="task_title">Прослушайте и выберите правильный вариант</div>
+                <div ng-if="question.type == 6" class="task_title">Прослушайте и напишите что вы услышали</div>
+
+                <!--<div class="question">{{current_question.value}}</div>-->
+
+                <div class="question_text" ng-if="question.type == 1">{{question.value}}</div>
+                <div class="question_text" ng-if="question.type == 2">{{question.value}}</div>
+                <div class="question_text" ng-if="question.type == 3">{{question.value[0]}}<span class="word">{{selected_answer.text}}</span>{{question.value[1]}}</div>
+                <div class="question_text" ng-if="question.type == 4">{{question.value}}</div>
+                <div class="question_text" ng-if="question.type == 5"><div class="btn btn-primary" ng-click="listen($event)">Прослушать</div></div>
+                <div class="question_text" ng-if="question.type == 6"><div class="btn btn-primary" ng-click="listen($event)">Прослушать</div></div>
+
+
+                <div class="answers_block {{types[question.type]}}">
+                    <div ng-if="question.type == 1" class="item {{item.collection_id == question.correct ? 'correct':''}} {{item.collection_id == question.wrong ? 'wrong':''}}" ng-click="selectAnswer($event,item)" ng-repeat="item in question.answers" ng-cloak>
+                        {{item.text}}
+                    </div>
+
+                    <div ng-if="question.type == 2" class="item {{item.collection_id == question.correct ? 'correct':''}} {{item.collection_id == question.wrong ? 'wrong':''}}" ng-click="selectAnswer($event,item)" ng-repeat="item in question.answers" ng-cloak>
+                        <img src="<?=$this->m->config->assets_source?>/images/{{item.filename}}">
+                    </div>
+
+                    <div ng-if="question.type == 3" class="item {{item.collection_id == question.correct ? 'correct':''}} {{item.collection_id == question.wrong ? 'wrong':''}}" ng-click="selectAnswer($event,item)" ng-repeat="item in question.answers" ng-cloak>
+                        {{item.text}}
+                    </div>
+
+                    <div ng-if="question.type == 5" class="item {{item.collection_id == question.correct ? 'correct':''}} {{item.collection_id == question.wrong ? 'wrong':''}}" ng-click="selectAnswer($event,item)" ng-repeat="item in question.answers" ng-cloak>
+                        {{item.text}}
+                    </div>
+
+                    <div ng-if="question.type == 4" class="item" ng-cloak>
+                        <input type="text" class="form-control" id="answer_input">
+                    </div>
+
+                    <div ng-if="question.type == 6" class="item" ng-cloak>
+                        <input type="text" class="form-control" id="answer_input">
+                    </div>
+                </div>
+            </div>
+            <!--<div class="btn btn-primary {{!current_answer ? 'unactive':''}}" ng-click="nextQuestion($event)" style="width:200px;">Далі</div>-->
+            
+            <div class="question_footer">
+                <div class="check_btn" ng-click="nextQuestion($event)">Далее</div>                
+            </div>            
+        </div>
+
+        <div id="check_results_block" ng-if='results'>
+            <div class="item" data-type="{{item.type}}" ng-repeat="item in results">
+                <div class="question">{{item.value}}</div>
+                <div class='answers_block'>
+                    <div ng-if="item.type == 1" class='answer{{answer.correct ? " correct":""}}{{answer.selected ? " selected":""}}' ng-repeat='answer in item.answers'>{{answer.text}}</div>
+
+                    <div ng-if="item.type == 2" class='answer{{answer.correct ? " correct":""}}{{answer.selected ? " selected":""}}' ng-repeat='answer in item.answers'>
+                        <img src="http://languageadmin/assets/images/{{answer.filename}}">
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    
+    
 </div>

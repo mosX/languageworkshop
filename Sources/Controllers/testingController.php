@@ -1,7 +1,7 @@
 <?php
     class testingController extends Model {
         public function init(){
-
+            $this->m->addCSS('questions');
         }
         
         public function indexAction(){
@@ -20,9 +20,12 @@
                         "SELECT `question_collections`.* "
                         . " , `questions`.`value`"
                         . " , `questions`.`type`"
+                        . " , `audios`.`filename` as audio"
                         . " FROM `question_collections` "
                         . " LEFT JOIN `questions` ON `questions`.`id` = `question_collections`.`question_id`"
+                        . " LEFT JOIN `audios` ON `audios`.`id` = `questions`.`audio_id`"
                         . " WHERE `question_collections`.`lesson_id` = ".(int)$this->m->lesson->id
+                        . " AND `question_collections`.`published` = 1"
                         . " ORDER BY RAND()"
                     );
             $data = $this->m->_db->loadObjectList('question_id');
@@ -33,6 +36,8 @@
             $this->m->_db->setQuery(
                         "SELECT `answer_collections`.* "
                         . " , `answers`.`text`"
+                        . " , `answer_collections`.`id` as collection_id"
+                        . " , `answers`.`id` as answer_id"
                         . " , `answers`.`image_id`"
                         . " , `images`.`filename`"
                         . " FROM `answer_collections` "
@@ -50,6 +55,7 @@
             foreach($data as $item){    //что бы индексы были по порядку
                 $this->m->data[] = $item;
             }
+            
         }
         
         public function catalogAction(){
@@ -122,7 +128,7 @@
             //$this->m->testing = $data;
         }
         
-        public function generateHash(){
+        /*public function generateHash(){
             $hash = makeDigitPassword(8);
             
             $this->m->_db->setQuery(
@@ -134,7 +140,7 @@
             if($check) $this->generateHash();
             
             return $hash;
-        }
+        }*/
         
         public function getResults($id){
              $this->m->_db->setQuery(
@@ -157,6 +163,7 @@
                         . " FROM `question_collections`"
                         . " LEFT JOIN `questions` ON `questions`.`id` = `question_collections`.`question_id`"
                         . " WHERE `question_collections`.`lesson_id` = ".(int)$result->lesson_id
+                        . " AND `question_collections`.`published` = 1"
                     );
             $data = $this->m->_db->loadObjectList('question_id');
             foreach($data as $item)$ids[] = $item->question_id;
@@ -195,6 +202,26 @@
             //$this->m->testing = $data;
         }
         
+        public function handleInputQuestion($question,$answer){
+            $this->m->_db->setQuery(
+                        "SELECT `questions`.* "
+                        . " , `answers`.`text`"
+                        . " FROM `questions` "
+                        . " LEFT JOIN `answer_collections` ON `answer_collections`.`question_id` = `questions`.`id`"
+                        . " LEFT JOIN `answers` ON `answers`.`id` = `answer_collections`.`answer_id`"
+                        . " WHERE `questions`.`id` = ".$question->question_id
+                    );
+            $answers = $this->m->_db->loadObjectList();
+            
+            foreach($answers as $item){
+                if($answer == $item->text){
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+        
         public function checkAction(){
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 $this->disableTemplate();
@@ -230,9 +257,11 @@
                             . " , `questions`.`value`"
                             . " , `questions`.`correct`"
                             . " , `questions`.`score`"
+                            . " , `questions`.`type`"
                             . " FROM `question_collections` "
                             . " LEFT JOIN `questions` ON `questions`.`id` = `question_collections`.`question_id`"
                             . " WHERE `question_collections`.`lesson_id` = ".$lesson_id
+                            . " AND `question_collections`.`published` = 1"
                             
                         );
                 $questions = $this->m->_db->loadObjectList();
@@ -240,20 +269,27 @@
                 $corrects = 0;
                 $score = 0;
                 
+                
                 foreach($questions as $item){
-                    if($results[$item->question_id]['answer']){
-                        if($results[$item->question_id]['answer'] == $item->correct){
+                    if($item->type == 6 || $item->type == 4){
+                        if($this->handleInputQuestion($item,$results[$item->question_id]['answer'])){
                             $corrects++;
-                            $score += $item->score;                        
+                            $score += $item->score;
                         }
                     }else{
-                        if($results[$item->question_id] == $item->correct){
-                            $corrects++;
-                            $score += $item->score;                        
+                        if($results[$item->question_id]['answer']){
+                            if($results[$item->question_id]['answer'] == $item->correct){
+                                $corrects++;
+                                $score += $item->score;                        
+                            }
+                        }else{
+                            if($results[$item->question_id] == $item->correct){
+                                $corrects++;
+                                $score += $item->score;                        
+                            }
                         }
                     }
                 }
-                
                 $message = '';
                 
                 if($terms){
@@ -267,21 +303,19 @@
                 
 
                 $row->lesson_id = $lesson_id;
-                $row->hash = $this->generateHash(); //нужно сгенерировать уникальный ключ и записать данные в базу
+                //$row->hash = $this->generateHash(); //нужно сгенерировать уникальный ключ и записать данные в базу
                 $row->score = $score;
                 $row->date = date("Y-m-d H:i:s");
                 $row->username = $username;
                 $row->results = serialize($results);
-                if($this->m->_db->insertObject('testing_results',$row,'id')){
-                    
+                if($this->m->_db->insertObject('testing_results',$row,'id')){                    
                     if($lesson->show_answers){
-                        
                         $results_json = $this->getResults($row->id);
                     }
                     
                     $json->status = 'success';
                     $json->score = $score;
-                    $json->hash = $row->hash;
+                    //$json->hash = $row->hash;
                     $json->message = $message;
                     if($results_json) $json->results = $results_json;
                     
