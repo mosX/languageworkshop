@@ -322,6 +322,7 @@
                     echo json_encode($json);
                     //echo '{"status":"success","score":"'.$score.'","hash":"'.$row->hash.'","message":"'.$message.'"}';
                 }else{
+                    p($this->m->_db->_sql);
                     echo '{"status":"error"}';
                 }
             }

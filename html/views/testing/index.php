@@ -151,7 +151,7 @@
         }
 
         $scope.submit = function(event){
-            if($(event.target).hasClass('unactive'))return;
+            //if($(event.target).hasClass('unactive'))return;
             $scope.handleCurrentQuestion();
                    
             console.log($scope.results);
