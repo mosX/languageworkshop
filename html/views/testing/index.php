@@ -153,7 +153,9 @@
         $scope.submit = function(event){
             if($(event.target).hasClass('unactive'))return;
             $scope.handleCurrentQuestion();
-                        
+                   
+            console.log($scope.results);
+            event.preventDefault();
             $http({
                 url:'/testing/check/',
                 method:'POST',
