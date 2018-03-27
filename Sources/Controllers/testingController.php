@@ -56,6 +56,9 @@
                 $this->m->data[] = $item;
             }
             
+            
+            //TESTING
+            $this->m->results = json_encode($this->getResults(80));            
         }
         
         public function catalogAction(){
@@ -160,13 +163,20 @@
                         . " , `questions`.`value`"
                         . " , `questions`.`correct`"
                         . " , `questions`.`type`"
+                        . " , `audios`.`filename` as audio"
                         . " FROM `question_collections`"
                         . " LEFT JOIN `questions` ON `questions`.`id` = `question_collections`.`question_id`"
+                        . " LEFt JOIN `audios` ON `audios`.`id` = `questions`.`audio_id`"
                         . " WHERE `question_collections`.`lesson_id` = ".(int)$result->lesson_id
                         . " AND `question_collections`.`published` = 1"
                     );
             $data = $this->m->_db->loadObjectList('question_id');
-            foreach($data as $item)$ids[] = $item->question_id;
+            //foreach($data as $item)$ids[] = $item->question_id;
+            
+            foreach($data as $item){
+                $ids[] = $item->question_id;
+                $item->result_answer = $result->results[$item->question_id]['answer'];                
+            }
             
             //получаем ответы
             $this->m->_db->setQuery(
@@ -180,7 +190,7 @@
                     );
             $answers = $this->m->_db->loadObjectList();
             
-            foreach($answers as $item){
+            /*foreach($answers as $item){
                 if($result->results[$item->question_id]['answer']){ //новый вариант со временем
                     if($item->id == $result->results[$item->question_id]['answer']){
                          $item->selected = 'true';
@@ -196,7 +206,29 @@
                 }
                 
                 $data[$item->question_id]->answers[] = $item;                                
+            }*/
+            
+            foreach($answers as $item){
+                $data[$item->question_id]->answers[] = $item;
             }
+            
+            foreach($data as $item){
+                $item->status = 'wrong';
+                
+                if($item->type == 4 || $item->type == 6){
+                    foreach($item->answers as $answer){
+                        if($answer->text == $item->result_answer){
+                            $item->status = 'correct';
+                            break;
+                        }
+                    }
+                }else{
+                    if($item->result_answer == $item->correct){
+                        $item->status = 'correct';
+                    }
+                }
+            }
+            
             //$this->m->data = json_encode($data);
             return $data;
             //$this->m->testing = $data;

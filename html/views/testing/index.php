@@ -25,14 +25,15 @@
         $scope.questions = 0;
         
         $scope.question_index = 0;
-        $scope.results = {};
+        //$scope.results = {};
+        $scope.results = <?=$this->m->results?>;
+        
         $scope.end = false; //статус окончания теста
-        $scope.repeat = false;  //статус отображения кнопки повторить тест
+        $scope.repeat = false;  //статус отображения кнопки повторить тест   //false
         $scope.username = '';
         $scope.lesson_id = <?=(int)$_GET['lesson_id']?>
         
-        $scope.start_timestamp = (new Date()).getTime();
-        
+        $scope.start_timestamp = (new Date()).getTime();       
         $scope.selected_answer = '';
         
         $scope.types = {    
@@ -43,12 +44,7 @@
             5:'listen_pick',
             6:'listen_write'
         }
-        
-        /*$scope.types = {
-            1:'text_quest',
-            2:'image_quest'
-        }*/
-        
+                
         
         //считаем сколько есть вопросов всего
         for(var key in $scope.tests){
@@ -149,6 +145,10 @@
             location.href = location.href;
             event.preventDefault();
         }
+        
+        
+        
+        
 
         $scope.submit = function(event){
             //if($(event.target).hasClass('unactive'))return;
@@ -179,6 +179,18 @@
             });
             
             event.preventDefault();
+        }
+        
+        $scope.listen = function(url){
+            var sound = new Audio('<?=$this->m->config->assets_source?>/audios/'+url);
+            sound.play();
+        }
+        
+        $scope.setStatus = function(item,answer){
+            var status_correct = (item.correct == answer.id?'correct':'');
+            var status_wrong = (item.result_answer == answer.id && item.status == 'wrong'?'wrong':'');
+            
+            return status_correct+' '+status_wrong;
         }
     }]);
 </script>
@@ -214,7 +226,7 @@
     </style>
     
     <style>
-        #check_results_block .item{
+        /*#check_results_block .item{
             margin-bottom:15px;
             
         }
@@ -261,7 +273,7 @@
         }
         #check_results_block .item[data-type="2"] .answers_block .correct,#results_block .answers_block .correct.selected{
             border:2px solid green;
-        }
+        }*/
     </style>
   
         <div style="margin-top:40px;margin-bottom:20px;" class="again text-center" ng-if="repeat">
@@ -281,6 +293,9 @@
             <div class="btn btn-primary" ng-click="submit($event)" style="width:200px;">Отримати результат</div>
         </div>
 
+    
+    
+    
         <div class="question_block" ng-cloak="" ng-if="!end && !repeat">
             <!--<div class="question_left">{{total-questions+1}} / {{total}}</div>-->
             <style>
@@ -375,19 +390,151 @@
                 <div class="check_btn" ng-click="nextQuestion($event)">Далее</div>                
             </div>            
         </div>
-
+    
+    
+    
+    
+    
+        <style>
+            #check_results_block{
+                margin-top: 20px;
+            }
+            #check_results_block .item{
+                background: #1a1b16;
+                padding:10px 20px;
+                padding-left: 30px;
+                border-radius: 5px;
+                margin-bottom:15px;
+            }
+            
+            #check_results_block .item .type_title{
+                color: #ddd;
+                font-size: 18px;
+                font-weight: bold;
+                margin-left: -10px;
+            }
+            #check_results_block .item .answers_block{
+                margin-top:15px;
+                color: #ddd;
+                margin-left:-10px;
+                margin-right:-10px;
+            }
+            
+            #check_results_block .item .answers_block .answer{
+                display:inline-block;
+                vertical-align: middle;
+                padding:2px 10px;
+                text-align: center;
+                border: 2px solid #5b5b5b;                
+                border-radius: 15px;
+                margin-right: 10px;
+            }
+            
+            #check_results_block .item .answers_block .answer.correct{
+                border: 2px solid #65ab00;
+            }
+            
+            #check_results_block .item .answers_block .answer.wrong{
+                border: 2px solid #e70800;
+            }
+            
+            #check_results_block .item.pick_image .answers_block .answer{
+                width:70px;
+                height:70px;
+                text-align: center;
+                border-radius: 0px;
+                padding:0px;
+                box-sizing: content-box;
+            }
+            
+            #check_results_block .item .answers_block .answer img{
+                max-width:70px;
+                max-height:70px;
+            }
+            
+            
+            #check_results_block .item .question{
+                color: #ddd;                
+            }
+            #check_results_block .item .question .listen{
+                display:inline-block;
+                vertical-align: middle;
+                height: 24px;
+                width:auto;
+                font-size: 14px;
+                padding:0px 15px;
+                padding-top:-2px;
+            }
+            #check_results_block .item .question .result_answer{
+                border: 2px solid #5b5b5b;
+                color: #ddd;
+                display: inline-block;
+                vertical-align: middle;
+                
+                padding:2px 10px;
+                text-align: center;                
+                border-radius: 15px;
+            }
+            #check_results_block .item .question .result_answer.correct{
+                border: 2px solid #65ab00;
+            }
+            #check_results_block .item .question .result_answer.wrong{
+                border: 2px solid #e70800;
+            }
+            
+            /*
+            #1a1b16 //dark
+            #272822 //grey
+            
+            
+            #65ab00 //green
+            #e70800 //red
+            */
+        </style>
         <div id="check_results_block" ng-if='results'>
-            <div class="item" data-type="{{item.type}}" ng-repeat="item in results">
-                <div class="question">{{item.value}}</div>
+            <div class="item {{types[item.type]}}" data-type="{{item.type}}" ng-repeat="item in results">
+                <div ng-if="item.type == 1" class="type_title">Выберите правильный ответ</div>
+                <div ng-if="item.type == 2" class="type_title">Выберите правильную картинку</div>
+                <div ng-if="item.type == 3" class="type_title">Выберите пропущенное слово или фразу</div>
+                <div ng-if="item.type == 4" class="type_title">Написать перевод</div>
+                <div ng-if="item.type == 5" class="type_title">Прослушать и выбрать</div>
+                <div ng-if="item.type == 6" class="type_title">Прослушать и написать</div>
+                
+                <div class="question" ng-if='item.type == 1 || item.type == 2 || item.type == 3 || item.type == 4'>
+                    {{item.value}} <div ng-if="item.type == 4" class="result_answer {{item.status}}">{{item.result_answer}}</div>
+                </div>
+                <div class="question" ng-if='item.type == 5'>
+                    <div ng-click='listen(item.audio)' class="listen btn btn-primary">Прослушать</div>
+                </div>
+                <div class="question" ng-if='item.type == 6'>
+                    <div ng-click='listen(item.audio)' class="listen btn btn-primary">Прослушать</div> <div ng-if="item.type == 4 || item.type == 6" class="result_answer {{item.status}}">{{item.result_answer}}</div>                        
+                </div>
+                            
                 <div class='answers_block'>
-                    <div ng-if="item.type == 1" class='answer{{answer.correct ? " correct":""}}{{answer.selected ? " selected":""}}' ng-repeat='answer in item.answers'>{{answer.text}}</div>
+                    <div ng-if="item.type == 1" class='answer {{setStatus(item,answer)}}' ng-repeat='answer in item.answers'>
+                        {{answer.text}}
+                    </div>
 
-                    <div ng-if="item.type == 2" class='answer{{answer.correct ? " correct":""}}{{answer.selected ? " selected":""}}' ng-repeat='answer in item.answers'>
+                    <div ng-if="item.type == 2" class='answer {{setStatus(item,answer)}}' ng-repeat='answer in item.answers'>
                         <img src="http://languageadmin/assets/images/{{answer.filename}}">
+                    </div>
+                    
+                    <div ng-if="item.type == 3" class='answer {{setStatus(item,answer)}}' ng-repeat='answer in item.answers'>
+                        {{answer.text}}
+                    </div>
+                    
+                    <div ng-if="item.type == 4" class='answer {{setStatus(item,answer)}}' ng-repeat='answer in item.answers'>
+                        {{answer.text}}
+                    </div>
+                    
+                    <div ng-if="item.type == 5" class='answer {{setStatus(item,answer)}}' ng-repeat='answer in item.answers'>
+                        {{answer.text}}
+                    </div>
+                    
+                    <div ng-if="item.type == 6" class='answer {{setStatus(item,answer)}}' ng-repeat='answer in item.answers'>
+                        {{answer.text}}
                     </div>
                 </div>
             </div>
         </div>
-    
-    
 </div>
