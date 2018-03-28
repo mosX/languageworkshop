@@ -25,8 +25,10 @@
         $scope.questions = 0;
         
         $scope.question_index = 0;
-        //$scope.results = {};
-        $scope.results = <?=$this->m->results?>;
+        $scope.view_answers = false;    //ответы в конце опроса
+        $scope.results = {};
+        
+        //$scope.view_answers = <?=$this->m->results?>;
         
         $scope.end = false; //статус окончания теста
         $scope.repeat = false;  //статус отображения кнопки повторить тест   //false
@@ -45,7 +47,6 @@
             6:'listen_write'
         }
                 
-        
         //считаем сколько есть вопросов всего
         for(var key in $scope.tests){
             $scope.questions++;
@@ -53,7 +54,7 @@
         $scope.total = $scope.questions;
         //console.log($scope.tests);
        
-       $scope.listen = function(event){
+       $scope.listen_question = function(event){
             console.log($scope.question);
             
             var sound = new Audio('<?=$this->m->config->assets_source?>/audios/'+$scope.question.audio);
@@ -146,9 +147,7 @@
             event.preventDefault();
         }
         
-        
-        
-        
+                
 
         $scope.submit = function(event){
             //if($(event.target).hasClass('unactive'))return;
@@ -170,7 +169,7 @@
                     console.log('REPEAT');
                     $scope.repeat = true;
                     
-                    $scope.results = ret.data.results;
+                    $scope.view_answers = ret.data.results;
                     $('#resultsSuccessModal').modal('show');
                 }else{
                     console.log('ERROR');
@@ -181,7 +180,7 @@
             event.preventDefault();
         }
         
-        $scope.listen = function(url){
+        $scope.listen_results = function(url){
             var sound = new Audio('<?=$this->m->config->assets_source?>/audios/'+url);
             sound.play();
         }
@@ -276,11 +275,11 @@
         }*/
     </style>
   
-        <div style="margin-top:40px;margin-bottom:20px;" class="again text-center" ng-if="repeat">
+        <div style="margin-top:40px;margin-bottom:20px;" class="again text-center" ng-if="repeat" ng-cloak>
             <div class="btn btn-primary" ng-click="restartLesson($event)" style="width:200px;">Спробувати знову</div>
         </div>
 
-        <div class="results_block" ng-if="end && !repeat">
+        <div class="results_block" ng-if="end && !repeat" ng-cloak>
             <div class="form-group">
                 <p style="font-weight:bold">Введіть ім'я та прізвище, щоб побачити результат.</p>
             </div>
@@ -354,8 +353,8 @@
                 <div class="question_text" ng-if="question.type == 2">{{question.value}}</div>
                 <div class="question_text" ng-if="question.type == 3">{{question.value[0]}}<span class="word">{{selected_answer.text}}</span>{{question.value[1]}}</div>
                 <div class="question_text" ng-if="question.type == 4">{{question.value}}</div>
-                <div class="question_text" ng-if="question.type == 5"><div class="btn btn-primary" ng-click="listen($event)">Прослушать</div></div>
-                <div class="question_text" ng-if="question.type == 6"><div class="btn btn-primary" ng-click="listen($event)">Прослушать</div></div>
+                <div class="question_text" ng-if="question.type == 5"><div class="btn btn-primary" ng-click="listen_question($event)">Прослушать</div></div>
+                <div class="question_text" ng-if="question.type == 6"><div class="btn btn-primary" ng-click="listen_question($event)">Прослушать</div></div>
 
 
                 <div class="answers_block {{types[question.type]}}">
@@ -390,10 +389,6 @@
                 <div class="check_btn" ng-click="nextQuestion($event)">Далее</div>                
             </div>            
         </div>
-    
-    
-    
-    
     
         <style>
             #check_results_block{
@@ -452,7 +447,6 @@
                 max-height:70px;
             }
             
-            
             #check_results_block .item .question{
                 color: #ddd;                
             }
@@ -481,18 +475,9 @@
             #check_results_block .item .question .result_answer.wrong{
                 border: 2px solid #e70800;
             }
-            
-            /*
-            #1a1b16 //dark
-            #272822 //grey
-            
-            
-            #65ab00 //green
-            #e70800 //red
-            */
         </style>
-        <div id="check_results_block" ng-if='results'>
-            <div class="item {{types[item.type]}}" data-type="{{item.type}}" ng-repeat="item in results">
+        <div id="check_results_block" ng-if='view_answers' ng-cloak>
+            <div class="item {{types[item.type]}}" data-type="{{item.type}}" ng-repeat="item in view_answers">
                 <div ng-if="item.type == 1" class="type_title">Выберите правильный ответ</div>
                 <div ng-if="item.type == 2" class="type_title">Выберите правильную картинку</div>
                 <div ng-if="item.type == 3" class="type_title">Выберите пропущенное слово или фразу</div>
@@ -504,10 +489,10 @@
                     {{item.value}} <div ng-if="item.type == 4" class="result_answer {{item.status}}">{{item.result_answer}}</div>
                 </div>
                 <div class="question" ng-if='item.type == 5'>
-                    <div ng-click='listen(item.audio)' class="listen btn btn-primary">Прослушать</div>
+                    <div ng-click='listen_results(item.audio)' class="listen btn btn-primary">Прослушать</div>
                 </div>
                 <div class="question" ng-if='item.type == 6'>
-                    <div ng-click='listen(item.audio)' class="listen btn btn-primary">Прослушать</div> <div ng-if="item.type == 4 || item.type == 6" class="result_answer {{item.status}}">{{item.result_answer}}</div>                        
+                    <div ng-click='listen_results(item.audio)' class="listen btn btn-primary">Прослушать</div> <div ng-if="item.type == 4 || item.type == 6" class="result_answer {{item.status}}">{{item.result_answer}}</div>                        
                 </div>
                             
                 <div class='answers_block'>

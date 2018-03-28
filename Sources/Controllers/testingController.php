@@ -56,9 +56,8 @@
                 $this->m->data[] = $item;
             }
             
-            
             //TESTING
-            $this->m->results = json_encode($this->getResults(80));            
+            //$this->m->results = json_encode($this->getResults(41));            
         }
         
         public function catalogAction(){
