@@ -1,5 +1,4 @@
 <?php
-xload('class.deals');
 xload('class.activity');
 
 class mainframe {
@@ -32,10 +31,11 @@ class mainframe {
         $this->setConfig();
         $this->setDB();
         
-        $this->_auth = new xAuth($this);
-        
+        $this->_auth = new xAuth($this);        
         $this->_auth->initSession();        
-        //$this->initSession();
+        
+        
+        $this->getUniqueVisitor();        
         
         $this->parsePath();
         $this->setLang();
@@ -50,10 +50,24 @@ class mainframe {
             $this->_islogin = true;
         }*/
         
-        if($_GET['datatype']== 'ajax')$this->disableTemplate();
+        //if($_GET['datatype']== 'ajax')$this->disableTemplate();
         
         $this->page();
         $this->output();
+    }
+    
+    public function getUniqueVisitor(){
+        $this->activity = new Activity($this);
+        
+        $this->activity->visitorUID = $_COOKIE["visitor_uid"];
+        
+        if(!$this->activity->visitorUID){  //seting Uids Cookies            
+            $this->activity->visitorUID = $this->activity->addVisitor();            
+        }else{      //updating activity time
+            
+            $this->activity->addActivity();
+            $this->activity->updActivity($this->activity->visitorUID);
+        }
     }
     
     private function getLessonsList(){
@@ -310,19 +324,7 @@ class mainframe {
           }*/
         
     }
-    public function getUniqueVisitor(){        
-        $this->activity = new Activity($this);
-        
-        $this->activity->visitorUID = $_COOKIE["advuid"];
-
-        if(!$this->activity->visitorUID){  //seting Uids Cookies
-            $this->activity->visitorUID = $this->activity->addVisitor();
-        }else{      //updating activity time
-            
-            $this->activity->addActivity();
-            $this->activity->updActivity($this->activity->visitorUID);
-        }
-    }
+    
     
     public function get4Info(){
         if($this->protocol == true) return;   //если вебсокеты отключены

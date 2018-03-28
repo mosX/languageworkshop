@@ -18,7 +18,10 @@ class Activity{
         $row->referer = $_SERVER['HTTP_REFERER'];
         $row->date = date('Y-m-d H:i:s');
         
-        if($this->m->_db->insertObject('visitors_activity',$row)) $this->id = $this->m->_db->insertid();
+        if($this->m->_db->insertObject('visitors_activity',$row,'id')){
+            //$this->id = $this->m->_db->insertid();
+            $this->id = $row->id;
+        }
     }
     
     public function addGoal($goal){
@@ -29,8 +32,7 @@ class Activity{
         $this->m->_db->insertObject('goals',$row);
     }
     
-    public function addVisitor($uid = null){
-        
+    public function addVisitor($uid = null){        
         $date = date('Y-m-d H:i:s');
         $row->user_agent = $_SERVER['HTTP_USER_AGENT'];
         $row->ip = $_SERVER['REMOTE_ADDR'];
@@ -39,11 +41,13 @@ class Activity{
         
         $this->visitorUID = $row->uid = md5($row->ip.$row->user_agent.(time()));
         
-        $this->visitorID = $this->m->_db->insertObject($this->_table,$row);
+        $this->visitorID = $this->m->_db->insertObject($this->_table,$row,'id');
+        
         $this->addActivity($this->visitorID);   
         
         if($this->id){
-            setcookie("advuid", $row->uid , mktime(date('H'),date('i'),date('s'),'12','20','2030'),'/',null);
+            //setcookie("visitor_uid", $row->uid , mktime(date('H'),date('i'),date('s'),'12','20','2030'),'/',null);
+            setcookie("visitor_uid", $row->uid , time()+199999999,'/',null);
         }
         
         return $row->uid;
