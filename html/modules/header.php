@@ -144,10 +144,10 @@
                 </li>
                 
                 <li class='<?=$this->_controller == 'info' ? 'active':''?>'>
-                    <a href='#'>СТАТТІ</a>
+                    <a href='/info/'>СТАТТІ</a>
                     <div class='list'>
                         <a href='/info/article1/' class='item'>Рівні вивчення мов</a>
-                        <a href='/info/article2/' class='item'>Тема 2</a>
+                        <a href='/info/article2/' class='item'>Тонкощі польської мови</a>
                     </div>                    
                 </li>
             </ul>

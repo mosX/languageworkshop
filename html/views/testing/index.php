@@ -340,12 +340,12 @@
                     <div class="counter">{{total-questions+1}} / {{total}}</div>
                 </div>
                 
-                <div ng-if="question.type == 1" class="task_title">Выберите правильный ответ</div>
-                <div ng-if="question.type == 2" class="task_title">Выберите правильное изображение</div>
-                <div ng-if="question.type == 3" class="task_title">Выберите пропущенное слово</div>
-                <div ng-if="question.type == 4" class="task_title">Переведите текст</div>
-                <div ng-if="question.type == 5" class="task_title">Прослушайте и выберите правильный вариант</div>
-                <div ng-if="question.type == 6" class="task_title">Прослушайте и напишите что вы услышали</div>
+                <div ng-if="question.type == 1" class="task_title">Виберіть правильну відповідь</div>
+                <div ng-if="question.type == 2" class="task_title">Виберіть правильне зображення</div>
+                <div ng-if="question.type == 3" class="task_title">Оберіть пропущене слово чи фразу</div>
+                <div ng-if="question.type == 4" class="task_title">Перекладіть текст</div>
+                <div ng-if="question.type == 5" class="task_title">Прослухайте та оберіть вірну відповідь</div>
+                <div ng-if="question.type == 6" class="task_title">Прослухайте та напишіть, що ви почули</div>
 
                 <!--<div class="question">{{current_question.value}}</div>-->
 
@@ -478,12 +478,12 @@
         </style>
         <div id="check_results_block" ng-if='view_answers' ng-cloak>
             <div class="item {{types[item.type]}}" data-type="{{item.type}}" ng-repeat="item in view_answers">
-                <div ng-if="item.type == 1" class="type_title">Выберите правильный ответ</div>
-                <div ng-if="item.type == 2" class="type_title">Выберите правильную картинку</div>
-                <div ng-if="item.type == 3" class="type_title">Выберите пропущенное слово или фразу</div>
-                <div ng-if="item.type == 4" class="type_title">Написать перевод</div>
-                <div ng-if="item.type == 5" class="type_title">Прослушать и выбрать</div>
-                <div ng-if="item.type == 6" class="type_title">Прослушать и написать</div>
+                <div ng-if="item.type == 1" class="type_title">Виберіть правильну відповідь</div>
+                <div ng-if="item.type == 2" class="type_title">Виберіть правильне зображення</div>
+                <div ng-if="item.type == 3" class="type_title">Оберіть пропущене слово чи фразу</div>
+                <div ng-if="item.type == 4" class="type_title">Перекладіть текст</div>
+                <div ng-if="item.type == 5" class="type_title">Прослухайте та оберіть вірну відповідь</div>
+                <div ng-if="item.type == 6" class="type_title">Прослухайте та напишіть, що ви почули</div>
                 
                 <div class="question" ng-if='item.type == 1 || item.type == 2 || item.type == 3 || item.type == 4'>
                     {{item.value}} <div ng-if="item.type == 4" class="result_answer {{item.status}}">{{item.result_answer}}</div>
