@@ -79,55 +79,55 @@
             <!--<a style='font-size:26px; color: #fab80f; margin-top:4px;' class="navbar-brand" href="/">LanguageWorkShop</a>-->
             <a style='font-size:26px; color: #fab80f; margin-top:4px;' class="navbar-brand" href="/"><img src="/html/images/logo-trans.png"></a>
         </div>
-<script>
-    /*$('document').ready(function(){
-        $('#header .navbar-nav li').mouseenter(function(){
-            if($('.list',this).length > 0){
-                console.log('DROPDOWN');
+        <script>
+            /*$('document').ready(function(){
+                $('#header .navbar-nav li').mouseenter(function(){
+                    if($('.list',this).length > 0){
+                        console.log('DROPDOWN');
+                    }
+                });
+            });*/
+        </script>
+        <style>
+            #header .navbar-nav li{
+                position:relative;
             }
-        });
-    });*/
-</script>
-<style>
-    #header .navbar-nav li{
-        position:relative;
-    }
-    
-    #header .navbar-nav li .list{
-        display:none;
-        position:absolute;
-        top:100%;
-        width:250px;
-        height: auto;
-        min-height: 200px;
-        background:#433D39;
-        color: white;
-        z-index: 10000;
-    }
-    
-    #header .navbar-nav li:hover .list{
-        display:block;
-    }
-    
-    #header .navbar-nav li .list a{
-        border-bottom:1px solid #4f4945;
-        height: 50px;
-        text-decoration: none;
-        font-size: 14px;
-        padding-top:14px;
-        padding-bottom:5px;
-        padding-left: 20px;
-        padding-right: 20px;
-        overflow:hidden;
-        white-space: nowrap;
-        text-overflow:ellipsis;
-    }
-    
-    #header .navbar-nav li .list a:hover{
-        background: #fab80f;
-        color: black;
-    }
-</style>
+
+            #header .navbar-nav li .list{
+                display:none;
+                position:absolute;
+                top:100%;
+                width:250px;
+                height: auto;
+                min-height: 200px;
+                background:#433D39;
+                color: white;
+                z-index: 10000;
+            }
+
+            #header .navbar-nav li:hover .list{
+                display:block;
+            }
+
+            #header .navbar-nav li .list a{
+                border-bottom:1px solid #4f4945;
+                height: 50px;
+                text-decoration: none;
+                font-size: 14px;
+                padding-top:14px;
+                padding-bottom:5px;
+                padding-left: 20px;
+                padding-right: 20px;
+                overflow:hidden;
+                white-space: nowrap;
+                text-overflow:ellipsis;
+            }
+
+            #header .navbar-nav li .list a:hover{
+                background: #fab80f;
+                color: black;
+            }
+        </style>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li class='<?=$this->_controller == 'index' ? 'active':''?>'><a href='/'>ГОЛОВНА</a></li>
@@ -135,11 +135,11 @@
                 <li class='<?=$this->_controller == 'testing' ? 'active':''?>'>
                     <a href='/testing/catalog/'>ТЕСТУВАННЯ</a>
                     <?php if($this->lessons_list){ ?>
-                    <div class='list'>
-                        <?php foreach($this->lessons_list as $item){ ?>
-                            <a href='/testing/?lesson_id=<?=$item->id?>' class='item'><?=$item->name?></a>
-                        <?php } ?>
-                    </div>
+                        <div class='list'>
+                            <?php foreach($this->lessons_list as $item){ ?>
+                                <a href='/testing/?lesson_id=<?=$item->id?>' class='item'><?=$item->name?></a>
+                            <?php } ?>
+                        </div>
                     <?php } ?>
                 </li>
                 
@@ -147,6 +147,7 @@
                     <a href='#'>СТАТТІ</a>
                     <div class='list'>
                         <a href='/info/article1/' class='item'>Рівні вивчення мов</a>
+                        <a href='/info/article2/' class='item'>Тема 2</a>
                     </div>                    
                 </li>
             </ul>

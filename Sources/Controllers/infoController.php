@@ -11,5 +11,9 @@
         public function article1Action(){
             
         }
+        
+        public function article2Action(){
+            
+        }
     }
 ?>
