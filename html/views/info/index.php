@@ -109,7 +109,7 @@
                 </div>
             </a>
 
-            <a href="/info/?article2" class='item_block'>
+            <a href="/info/article2" class='item_block'>
                 <div class="item">
                     <div class='image_block' style='background: url("/html/images/articles/poster1.jpg") no-repeat center center; background-size: cover;'></div>
                     <div class='title'>Тонкощі польської мови</div>
