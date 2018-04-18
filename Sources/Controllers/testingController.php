@@ -21,9 +21,11 @@
                         . " , `questions`.`value`"
                         . " , `questions`.`type`"
                         . " , `audios`.`filename` as audio"
+                        . " , `images`.`filename` as image"
                         . " FROM `question_collections` "
                         . " LEFT JOIN `questions` ON `questions`.`id` = `question_collections`.`question_id`"
                         . " LEFT JOIN `audios` ON `audios`.`id` = `questions`.`audio_id`"
+                        . " LEFT JOIN `images` ON `images`.`id` = `questions`.`image_id`"
                         . " WHERE `question_collections`.`lesson_id` = ".(int)$this->m->lesson->id
                         . " AND `question_collections`.`published` = 1"
                         . " ORDER BY RAND()"
@@ -163,9 +165,11 @@
                         . " , `questions`.`correct`"
                         . " , `questions`.`type`"
                         . " , `audios`.`filename` as audio"
+                        . " , `images`.`filename` as image"
                         . " FROM `question_collections`"
                         . " LEFT JOIN `questions` ON `questions`.`id` = `question_collections`.`question_id`"
-                        . " LEFt JOIN `audios` ON `audios`.`id` = `questions`.`audio_id`"
+                        . " LEFT JOIN `audios` ON `audios`.`id` = `questions`.`audio_id`"
+                        . " LEFT JOIN `images` ON `images`.`id` = `questions`.`image_id`"
                         . " WHERE `question_collections`.`lesson_id` = ".(int)$result->lesson_id
                         . " AND `question_collections`.`published` = 1"
                     );
@@ -331,7 +335,7 @@
                         }
                     }
                 }
-                
+                                
 
                 $row->lesson_id = $lesson_id;
                 //$row->hash = $this->generateHash(); //нужно сгенерировать уникальный ключ и записать данные в базу
@@ -339,7 +343,7 @@
                 $row->date = date("Y-m-d H:i:s");
                 $row->username = $username;
                 $row->results = serialize($results);
-                if($this->m->_db->insertObject('testing_results',$row,'id')){                    
+                if($this->m->_db->insertObject('testing_results',$row,'id')){
                     if($lesson->show_answers){
                         $results_json = $this->getResults($row->id);
                     }

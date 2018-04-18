@@ -38,13 +38,14 @@
         $scope.start_timestamp = (new Date()).getTime();       
         $scope.selected_answer = '';
         
-        $scope.types = {    
+        $scope.types = {
             1:'pick_one',
             2:'pick_image',
             3:'missed_word',
             4:'translate',
             5:'listen_pick',
-            6:'listen_write'
+            6:'listen_write',
+            7:'pick_one'
         }
                 
         //считаем сколько есть вопросов всего
@@ -84,7 +85,7 @@
             console.log($scope.question);
             $scope.results[$scope.question.question_id] = {};
             
-            if($scope.question.type == 1 || $scope.question.type == 2 || $scope.question.type == 3 || $scope.question.type == 5){
+            if($scope.question.type == 1 || $scope.question.type == 2 || $scope.question.type == 3 || $scope.question.type == 5 || $scope.question.type == 7){
                 $scope.results[$scope.question.question_id].answer = $scope.selected_answer.id;
             }else if($scope.question.type == 4 || $scope.question.type == 6){
                 $scope.results[$scope.question.question_id].answer = $('#answer_input').val();
@@ -153,8 +154,9 @@
             //if($(event.target).hasClass('unactive'))return;
             $scope.handleCurrentQuestion();
                    
-            console.log($scope.results);
+            /*console.log('!!!!!!!!',$scope.results);
             event.preventDefault();
+            return false;*/
             $http({
                 url:'/testing/check/',
                 method:'POST',
@@ -293,8 +295,6 @@
         </div>
 
     
-    
-    
         <div class="question_block" ng-cloak="" ng-if="!end && !repeat">
             <!--<div class="question_left">{{total-questions+1}} / {{total}}</div>-->
             <style>
@@ -346,6 +346,7 @@
                 <div ng-if="question.type == 4" class="task_title">Перекладіть текст</div>
                 <div ng-if="question.type == 5" class="task_title">Прослухайте та оберіть вірну відповідь</div>
                 <div ng-if="question.type == 6" class="task_title">Прослухайте та напишіть, що ви почули</div>
+                <div ng-if="question.type == 7" class="task_title">Оберіть що ви бачите на зображенні</div>
 
                 <!--<div class="question">{{current_question.value}}</div>-->
 
@@ -355,6 +356,7 @@
                 <div class="question_text" ng-if="question.type == 4">{{question.value}}</div>
                 <div class="question_text" ng-if="question.type == 5"><div class="btn btn-primary" ng-click="listen_question($event)">Прослушать</div></div>
                 <div class="question_text" ng-if="question.type == 6"><div class="btn btn-primary" ng-click="listen_question($event)">Прослушать</div></div>
+                <div class="question_text" ng-if="question.type == 7"><img src="<?=$this->m->config->assets_source?>/questions/{{question.image}}"> </div>
 
 
                 <div class="answers_block {{types[question.type]}}">
@@ -380,6 +382,10 @@
 
                     <div ng-if="question.type == 6" class="item" ng-cloak>
                         <input type="text" class="form-control" id="answer_input">
+                    </div>
+                    
+                    <div ng-if="question.type == 7" class="item {{item.collection_id == question.correct ? 'correct':''}} {{item.collection_id == question.wrong ? 'wrong':''}}" ng-click="selectAnswer($event,item)" ng-repeat="item in question.answers" ng-cloak>
+                        {{item.text}}
                     </div>
                 </div>
             </div>
@@ -484,6 +490,7 @@
                 <div ng-if="item.type == 4" class="type_title">Перекладіть текст</div>
                 <div ng-if="item.type == 5" class="type_title">Прослухайте та оберіть вірну відповідь</div>
                 <div ng-if="item.type == 6" class="type_title">Прослухайте та напишіть, що ви почули</div>
+                <div ng-if="item.type == 7" class="type_title">Оберіть що ви бачите на зображенні</div>
                 
                 <div class="question" ng-if='item.type == 1 || item.type == 2 || item.type == 3 || item.type == 4'>
                     {{item.value}} <div ng-if="item.type == 4" class="result_answer {{item.status}}">{{item.result_answer}}</div>
@@ -493,6 +500,9 @@
                 </div>
                 <div class="question" ng-if='item.type == 6'>
                     <div ng-click='listen_results(item.audio)' class="listen btn btn-primary">Прослушать</div> <div ng-if="item.type == 4 || item.type == 6" class="result_answer {{item.status}}">{{item.result_answer}}</div>                        
+                </div>
+                <div class="question" ng-if='item.type == 7'>
+                    <img style="max-width:100px; max-height: 100px;display:block;" src="<?=$this->m->config->assets_source?>/questions/{{item.image}}">                    
                 </div>
                             
                 <div class='answers_block'>
@@ -518,6 +528,10 @@
                     
                     <div ng-if="item.type == 6" class='answer {{setStatus(item,answer)}}' ng-repeat='answer in item.answers'>
                         {{answer.text}}
+                    </div>
+                    
+                    <div ng-if="item.type == 7" class='answer {{setStatus(item,answer)}}' ng-repeat='answer in item.answers'>
+                        {{answer.text}} {{item.correct}} {{answer.id}} {{item.result_answer}}
                     </div>
                 </div>
             </div>

@@ -35,7 +35,7 @@ class mainframe {
         $this->_auth->initSession();        
         
         
-        $this->getUniqueVisitor();        
+        //$this->getUniqueVisitor();
         
         $this->parsePath();
         $this->setLang();
@@ -61,10 +61,9 @@ class mainframe {
         
         $this->activity->visitorUID = $_COOKIE["visitor_uid"];
         
-        if(!$this->activity->visitorUID){  //seting Uids Cookies            
+        if(!$this->activity->visitorUID){  //seting Uids Cookies
             $this->activity->visitorUID = $this->activity->addVisitor();            
         }else{      //updating activity time
-            
             $this->activity->addActivity();
             $this->activity->updActivity($this->activity->visitorUID);
         }

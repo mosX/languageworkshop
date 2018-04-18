@@ -48,6 +48,13 @@
     font-size:22px;
     color:#dddddd;            
 }
+.question_block .question_text img{
+    max-width:150px;
+    max-height: 150px;
+    text-align: center;
+    margin:auto;
+    display:block;
+}
 .question_block .answers_block{
     margin:20px 0px;
 }
